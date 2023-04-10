@@ -7,8 +7,7 @@ public class CardStack {
     private ArrayList<Integer> CardList;
     public CardStack(){
         CardList = new ArrayList<>();
-
-        for(int i=0;i<5;i++){ //A OPTIMISER
+        for(int i=0;i<5;i++){
             CardList.add(-2);
         }
         for(int i=0;i<10;i++){
@@ -17,45 +16,11 @@ public class CardStack {
         for(int i=0;i<15;i++){
             CardList.add(0);
         }
-        for(int i=0;i<10;i++){
-            CardList.add(1);
+        for (int i=0;i<120;i++) {
+            CardList.add(i / 10 + 1);
         }
-        for(int i=0;i<10;i++){
-            CardList.add(2);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(3);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(4);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(5);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(6);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(7);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(8);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(9);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(10);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(11);
-        }
-        for(int i=0;i<10;i++){
-            CardList.add(12);
-        }
-
+        
         Collections.shuffle(CardList);
-
     }
     public void printCards(){
         for(int i=0;i<CardList.size();i++){
