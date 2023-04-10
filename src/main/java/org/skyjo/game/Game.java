@@ -22,7 +22,7 @@ public class Game {
         this.nb_player=nb_player;
         for(int i=1;i<=nb_player;i++){
             map.put(i, new Player(i));
-            map.get(i).drawCard(stack, 12);
+            map.get(i).drawCard(stack, 4, 3);
         }
     }
     public void startGame(){}
