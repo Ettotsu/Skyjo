@@ -7,11 +7,11 @@ import org.skyjo.ui.UI;
 public class Main {
 
     public static void main(String[] args) {
-        int round=0;
-        int nb_player=0;
+        final int NB_PLAYER=2;
+
 
         Game game = new Game();
-        game.generatePlayer(nb_player);
+        game.generatePlayer(NB_PLAYER);
         UI window = new UI();
     }
 }

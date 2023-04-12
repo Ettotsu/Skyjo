@@ -26,6 +26,7 @@ public class CardStack {
         for(int i=0;i<CardList.size();i++){
             System.out.print(CardList.get(i) + " ");
         }
+        System.out.println();
     }
 
     public Card drawCard(){
