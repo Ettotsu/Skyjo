@@ -7,8 +7,8 @@ public class Player {
     private int number=0, score=0;
     private Card[][] deck;
 
-    public Player(int number, int column, int line){
-        deck = new Card[column][line];
+    public Player(int number, int row, int col){
+        deck = new Card[row][col];
         this.number = number;
     }
     public void printCards(){
@@ -32,9 +32,9 @@ public class Player {
     public int getScore(){
         return this.score;
     }
-    public void drawCard(CardStack list, int column, int line){
-        for(int i=0;i<column;i++){
-            for(int j=0;j<line;j++){
+    public void drawCard(CardStack list, int row, int col){
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
                 deck[i][j] = list.drawCard();
             }
         }
