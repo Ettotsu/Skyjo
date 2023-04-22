@@ -1,7 +1,7 @@
 package org.skyjo.game;
 
 public class Card {
-    private boolean isHidden = true;
+    private boolean isFaceUp = false;
     private int value=13;
 
     public Card(){}
@@ -16,8 +16,10 @@ public class Card {
     public int getValue(){
         return this.value;
     }
-    public void unHidden(){
-        isHidden = false;
+    public void setFaceUp(){
+        this.isFaceUp=true;
     }
-    public boolean CardIsHidden() {return isHidden;}
+    public boolean isFaceUp(){
+        return this.isFaceUp;
+    }
 }

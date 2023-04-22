@@ -20,7 +20,7 @@ public class UI extends JFrame {
     - cardWidth and cardHeight: the width and height of the cards
     - hgap and vgap: the horizontal and vertical gap between the cards*/
 
-    boolean borderless;
+    private boolean borderless;
 
     public UI(Game game, int rows, int cols) {
         super("Fail your Deutec"); // Title of the window
@@ -54,6 +54,9 @@ public class UI extends JFrame {
             gameInterface();
         });
         JButton settings = new JButton("Settings");
+        settings.addActionListener(e -> {
+            SettingsWindow settingsWindow = new SettingsWindow();
+        });
         JButton minigame = new JButton("MiniGame");
         minigame.addActionListener(e -> {
             MiniGameWindow miniGameWindow = new MiniGameWindow();

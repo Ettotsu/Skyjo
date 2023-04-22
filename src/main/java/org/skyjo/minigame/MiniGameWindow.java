@@ -20,19 +20,6 @@ public class MiniGameWindow extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
 
-        JLabel test = new JLabel();
-        this.setLayout(null);
-        add(test);
-        test.setBackground(Color.RED);
-        test.setOpaque(true);
-        test.setBounds(500, 500, 80, 112);
-        JLabel testmini = new JLabel();
-        add(testmini);
-        testmini.setBackground(Color.BLUE);
-        testmini.setOpaque(true);
-        testmini.setBounds(300, 500, 40, 56);
-
-
 
     }
 

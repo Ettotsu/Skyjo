@@ -7,9 +7,9 @@ import java.util.LinkedHashMap;
 public class Game {
     private int nb_player=0, endgame=0;
     private int rows, cols;
-    CardStack stack;
-    Card discard=null;
-    LinkedHashMap<Integer, Player> map;
+    private CardStack stack;
+    private Card discard=null;
+    private LinkedHashMap<Integer, Player> map;
 
     public Game(int rows, int cols){
         this.rows=rows;

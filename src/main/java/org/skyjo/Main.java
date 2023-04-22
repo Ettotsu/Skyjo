@@ -13,6 +13,5 @@ public class Main {
         Game game = new Game(DECK_ROWS, DECK_COLS);
         game.generatePlayer(2);
         UI window = new UI(game, DECK_ROWS, DECK_COLS);
-
     }
 }
