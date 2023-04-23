@@ -2,14 +2,25 @@ package org.skyjo.game;
 
 import java.util.ArrayList;
 
+import static org.skyjo.game.Game.DECK_COLS;
+import static org.skyjo.game.Game.DECK_ROWS;
+
 public class Player {
     private String name;
     private int number=0, score=0;
     private Card[][] deck;
 
-    public Player(int number, int row, int col){
-        deck = new Card[row][col];
+
+
+    public Player(int number, String name){
+        deck = new Card[DECK_ROWS][DECK_COLS];
         this.number = number;
+        if(name.equals("")) {
+            this.name = "Player " + number;
+        }
+        else{
+            this.name = name;
+        }
     }
     public void printCards(){
         for(int i=0;i<deck.length;i++){
@@ -20,9 +31,6 @@ public class Player {
         }
     }
 
-    public void setName(String name){
-        this.name=name;
-    }
     public String getName(){
         return name;
     }
@@ -32,7 +40,7 @@ public class Player {
     public int getScore(){
         return this.score;
     }
-    public void drawCard(CardStack list, int row, int col){
+    public void drawInitialDeck(CardStack list, int row, int col){
         for(int i=0;i<row;i++){
             for(int j=0;j<col;j++){
                 deck[i][j] = list.drawCard();

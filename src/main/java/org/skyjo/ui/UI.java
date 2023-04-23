@@ -22,13 +22,15 @@ public class UI extends JFrame {
 
     private boolean borderless;
 
-    public UI(Game game, int rows, int cols) {
+    private PlayersWindow playersWindow; // Players window
+
+    public UI(Game game) {
         super("Fail your Deutec"); // Title of the window
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.game = game;
-        this.rows = rows;
-        this.cols = cols;
+        this.rows = game.getDeckRows();
+        this.cols = game.getDeckCols();
 
 
         panel = new JPanel();
@@ -37,12 +39,12 @@ public class UI extends JFrame {
 
 
 
-    public void MainMenu(){
+    private void MainMenu(){
 
         prop=new PropertiesFile();
-        width = Integer.parseInt(prop.getProperty("window_width"));
-        height = Integer.parseInt(prop.getProperty("window_height"));
-        borderless = Boolean.parseBoolean(prop.getProperty("window_borderless"));
+        width = prop.getIntProperty("window_width");
+        height = prop.getIntProperty("window_height");
+        borderless = prop.getBooleanProperty("borderless");
 
         this.setSize(width, height);
         if(borderless){
@@ -51,7 +53,7 @@ public class UI extends JFrame {
 
         JButton start = new JButton("Start a new game");
         start.addActionListener(e -> {
-            gameInterface();
+            playersWindow = new PlayersWindow(game);
         });
         JButton settings = new JButton("Settings");
         settings.addActionListener(e -> {
@@ -90,7 +92,7 @@ public class UI extends JFrame {
         //yPos = (height * 180)/720;
 
     }
-    public void gameInterface() {
+    private void gameInterface() {
         panel.removeAll(); // Clears the panel
         panel.setLayout(null); // Sets the layout to absolute
         panel.setBackground(Color.BLUE);
