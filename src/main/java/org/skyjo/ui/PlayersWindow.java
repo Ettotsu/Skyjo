@@ -11,8 +11,6 @@ public class PlayersWindow extends JOptionPane {
     public static final int MIN_PLAYERS = 2, MAX_PLAYERS = 8;
     private int nbPlayers=0;
 
-    LinkedHashMap<Integer, Player> playersMap;
-
         public PlayersWindow(Game game){
             super("Number of players");
             this.setSize(200,100);
@@ -34,14 +32,12 @@ public class PlayersWindow extends JOptionPane {
             }
 
             if(showConfirmDialog(null, panel,"Enter the names of the players",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE)==JOptionPane.OK_OPTION){
-                playersMap = new LinkedHashMap<>();
+                String[] names = new String[nbPlayers+1];
                 for(int i=1;i<=nbPlayers;i++){
                     JTextField nameField = (JTextField) panel.getComponent(i * 2 - 1);
-                    playersMap.put(i,new Player(i, nameField.getText()));
+                    names[i] = nameField.getText();
                 }
-                game.setNbPlayers(nbPlayers);
-
-                game.setPlayersMap(playersMap);
+                game.makePlayersMap(nbPlayers, names);
                 game.startGame();
             }
         }

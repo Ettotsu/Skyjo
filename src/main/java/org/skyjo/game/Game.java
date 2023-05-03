@@ -22,13 +22,14 @@ public class Game {
     public int getEnd(){
             return endgame;
         }
-    public void setNbPlayers(int nbPlayers){
-        this.nbPlayers=nbPlayers;
-    }
 
-    public void setPlayersMap(LinkedHashMap<Integer,Player> playersMap){
+
+    public void makePlayersMap(int nbPlayers, String[] names){
+        this.nbPlayers = nbPlayers;
         this.playersMap = new LinkedHashMap<>();
-        this.playersMap.putAll(playersMap);
+        for(int i=1;i<=nbPlayers;i++){
+            playersMap.put(i,new Player(i, names[i]));
+        }
         System.out.println("Players map set");
     }
 
