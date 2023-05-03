@@ -1,7 +1,5 @@
 package org.skyjo.game;
 
-import java.util.ArrayList;
-
 import static org.skyjo.game.Game.DECK_COLS;
 import static org.skyjo.game.Game.DECK_ROWS;
 

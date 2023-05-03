@@ -5,25 +5,20 @@ import org.skyjo.settings.PropertiesFile;
 import javax.swing.*;
 import java.awt.*;
 
-public class SettingsWindow extends JFrame {
+public class SettingsWindow extends JOptionPane {
 
     private JPanel panel;
-    PropertiesFile prop;
+    private PropertiesFile prop;
     private JComboBox<String> windowSize;
     private JCheckBox borderless;
-    private JButton ok;
-    private JButton cancel;
 
     public SettingsWindow(){
         super("Settings");
-        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setSize(300,200);
-        this.setLocationRelativeTo(null);
         this.setVisible(true);
 
         panel = new JPanel();
         prop = new PropertiesFile();
-        panel.setLayout(new GridLayout(2,2));
 
 
         windowSize = new JComboBox<>();
@@ -41,8 +36,12 @@ public class SettingsWindow extends JFrame {
         }
         borderless = new JCheckBox("Borderless");
         borderless.setSelected(prop.getBooleanProperty("borderless"));
-        ok = new JButton("OK");
-        ok.addActionListener(e -> {
+        panel.add(windowSize);
+        panel.add(borderless);
+        this.add(panel);
+
+
+        if(this.showOptionDialog(null,panel,"Settings",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null)==JOptionPane.OK_OPTION){
             if(windowSize.getSelectedIndex()==0){
                 prop.setIntProperty("window_width",640);
                 prop.setIntProperty("window_height",360);
@@ -56,14 +55,7 @@ public class SettingsWindow extends JFrame {
                 prop.setIntProperty("window_height",720);
             }
             prop.setBooleanProperty("borderless",Boolean.valueOf(borderless.isSelected()));
-            this.dispose();
-        });
-        cancel = new JButton("Cancel");
-        cancel.addActionListener(e -> this.dispose());
-        panel.add(windowSize);
-        panel.add(borderless);
-        panel.add(ok);
-        panel.add(cancel);
-        this.add(panel);
+        }
+
     }
 }

@@ -8,10 +8,7 @@ public class CardButton extends JButton {
     private boolean isFaceUp;
     private Image img;
 
-    public CardButton(int value, boolean isFaceUp){
-        this.value = value;
-        this.isFaceUp = isFaceUp;
-
+    public CardButton(){
         this.setBorderPainted(false);
         this.setContentAreaFilled(false);
         this.updateImage();
@@ -23,6 +20,11 @@ public class CardButton extends JButton {
     }
     public int getValue() {
         return this.value;
+    }
+
+    public void setFaceUp(boolean isfaceUp) {
+        this.isFaceUp = isFaceUp;
+        this.updateImage();
     }
 
 
