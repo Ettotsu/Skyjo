@@ -48,6 +48,8 @@ public class Game {
         }
         stack.printCards();
         System.out.println("Number of players: " + nbPlayers);
+
+
     }
 }
 

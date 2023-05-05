@@ -9,25 +9,30 @@ import java.awt.event.MouseEvent;
 public class MenuButton extends JButton {
 
     private Image img;
+    private Image imgHover;
 
-    public MenuButton(String path, int width, int height){
-
-        this.img = new ImageIcon(path).getImage();
-        this.img = this.img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        this.setIcon(new ImageIcon(this.img));
+    public MenuButton(int width, int height, String path){
+        String pathHover = path.replace(".png", "_hover.png");
 
         this.setPreferredSize(new java.awt.Dimension(width, height));
         this.setBorder(BorderFactory.createEmptyBorder());
 
+        this.img = new ImageIcon(path).getImage();
+        this.img = this.img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        this.imgHover = new ImageIcon(pathHover).getImage();
+        this.imgHover = this.imgHover.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+
+        setIcon(new ImageIcon(img));
+
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                setBorder(BorderFactory.createEmptyBorder());
+                setIcon(new ImageIcon(img));
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                setBorder(BorderFactory.createLineBorder(Color.gray, 8));
+                setIcon(new ImageIcon(imgHover));
             }
 
         });

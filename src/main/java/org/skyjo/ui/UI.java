@@ -23,13 +23,20 @@ public class UI extends JFrame {
 
     public UI(Game game) {
         super("Fail your Deutec"); // Title of the window
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Ends the program when the main window is closed
 
         this.game = game;
 
         this.MainMenu();
     }
-
+    private void calculateImgSize(){
+        cardWidth = (width * 80)/1280;
+        cardHeight = (height * 112)/720;
+        hgap = (width * 12)/1280;
+        vgap = (height * 12)/720;
+        menuWidth = 2*(width * 146)/1280;
+        menuHeight = 2*(height * 42)/720;
+    }
     private void updateWindowSettings(){
         prop=new PropertiesFile();
         width = prop.getIntProperty("window_width");
@@ -49,27 +56,24 @@ public class UI extends JFrame {
         this.updateWindowSettings();
         this.calculateImgSize();
 
-        MenuButton start = new MenuButton("src/main/resources/assets/menu/start.png", menuWidth, menuHeight);
+        MenuButton start = new MenuButton(menuWidth,menuHeight,"src/main/resources/assets/menu/start.png");
         start.addActionListener(e -> new PlayersWindow(game));
-        MenuButton settings = new MenuButton("src/main/resources/assets/menu/settings.png", menuWidth, menuHeight);
+        MenuButton settings = new MenuButton(menuWidth,menuHeight,"src/main/resources/assets/menu/settings.png");
         settings.addActionListener(e -> {
             new SettingsWindow();
             this.updateWindowSettings();
 
         });
-        MenuButton minigame = new MenuButton("src/main/resources/assets/menu/minigame.png", menuWidth, menuHeight);
+        MenuButton minigame = new MenuButton(menuWidth,menuHeight,"src/main/resources/assets/menu/minigame.png");
         minigame.addActionListener(e -> new MiniGameWindow());
-        MenuButton quit = new MenuButton("src/main/resources/assets/menu/quit.png", menuWidth, menuHeight);
+        MenuButton quit = new MenuButton(menuWidth,menuHeight,"src/main/resources/assets/menu/quit.png");
         quit.addActionListener(e -> System.exit(0));
         JPanel mainMenuPanel = new JPanel();
         mainMenuPanel.add(start);
-        Dimension gap = new Dimension(10, 0);
-        mainMenuPanel.add(Box.createRigidArea(gap));
         mainMenuPanel.add(settings);
-        mainMenuPanel.add(Box.createRigidArea(gap));
         mainMenuPanel.add(minigame);
-        mainMenuPanel.add(Box.createRigidArea(gap));
         mainMenuPanel.add(quit);
+        mainMenuPanel.setVisible(true);
 
         JLayeredPane layeredPane = new JLayeredPane();
 
@@ -92,14 +96,6 @@ public class UI extends JFrame {
         this.setVisible(true); // Makes the window visible
     }
 
-    private void calculateImgSize(){
-        cardWidth = (width * 80)/1280;
-        cardHeight = (height * 112)/720;
-        hgap = (width * 12)/1280;
-        vgap = (height * 12)/720;
-        menuWidth = 2*(width * 146)/1280;
-        menuHeight = 2*(height * 42)/720;
-    }
 
     private void generatePanels(){
         LinkedHashMap<Integer, JPanel> panels = new LinkedHashMap<>();
@@ -107,14 +103,17 @@ public class UI extends JFrame {
         panels.get(0).setPreferredSize(new Dimension(cardWidth, cardHeight));
         panels.get(0).setLayout(new GridLayout(Game.DECK_ROWS, Game.DECK_COLS, hgap, vgap));
         for(int i = 0; i< Game.DECK_ROWS * Game.DECK_COLS; i++){
-            panels.get(0).add(new JLabel(new ImageIcon("src/main/resources/cards/back.png")));
+            panels.get(0).add(new CardButton(cardWidth, cardHeight));
         }
-
 
         for(int i=1;i<8;i++){
             panels.put(i, new JPanel());
             panels.get(i).setPreferredSize(new Dimension(cardWidth/2, cardHeight/2));
             panels.get(i).setLayout(new GridLayout(Game.DECK_ROWS, Game.DECK_COLS, hgap/2, vgap/2));
+            for(int j = 0; j< Game.DECK_ROWS * Game.DECK_COLS; j++){
+                panels.get(i).add(new CardLabel(cardWidth/2, cardHeight/2));
+            }
+
         }
     }
 
