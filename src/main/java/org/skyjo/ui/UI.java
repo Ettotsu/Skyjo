@@ -89,9 +89,6 @@ public class UI extends JFrame {
         this.getContentPane().add(layeredPane);
         this.setLocationRelativeTo(null);
 
-        mainMenuPanel.repaint();
-        mainMenuPanel.revalidate();
-
         this.setResizable(false); // Disables the resizing of the window
         this.setVisible(true); // Makes the window visible
     }
@@ -116,7 +113,6 @@ public class UI extends JFrame {
 
         }
     }
-
 
     private void gameInterface() {
         this.getContentPane().removeAll(); // Clears the panel
