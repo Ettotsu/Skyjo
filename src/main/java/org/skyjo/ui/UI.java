@@ -29,6 +29,9 @@ public class UI extends JFrame {
 
     private int panelWidth, panelHeight; // Width and height of the cards panels
 
+    private int h0 = 300 ,h1 = 420, h2 = 170, h3 = 40;
+    private int w0 = 320 , w1 = 40, w2 = 290, w3 = 550, w4 = 810, w5 = 1050;
+
     LinkedHashMap<Integer, JPanel> panels; // Map of the panels containing the cards buttons and labels
 
 
@@ -47,6 +50,7 @@ public class UI extends JFrame {
      * We could have put the values in a file, but we decided to hardcode them for optimization purposes.
      */
     private void calculateImgSize(){
+
         positionsX = new ArrayList<>();
         positionsY = new ArrayList<>();
 
@@ -60,37 +64,37 @@ public class UI extends JFrame {
         menuWidth = 2*(width * 146)/1280;
         menuHeight = 2*(height * 42)/720;
 
-        // First position
-        positionsX.add((width * 460)/1280);
-        positionsY.add((height * 300)/720);
+        // First position (player)
+        positionsX.add((width * w0)/1280);
+        positionsY.add((height * h0)/720);
 
         // Second position
-        positionsX.add((width * 50)/1280);
-        positionsY.add((height * 420)/720);
+        positionsX.add((width * w1)/1280);
+        positionsY.add((height * h1)/720);
 
         // Third position
-        positionsX.add((width * 50)/1280);
-        positionsY.add((height * 200)/720);
+        positionsX.add((width * w1)/1280);
+        positionsY.add((height * h2)/720);
 
         // Fourth position
-        positionsX.add((width * 460)/1280);
-        positionsY.add((height * 100)/720);
+        positionsX.add((width * w2)/1280);
+        positionsY.add((height * h3)/720);
 
         // Fifth position
-        positionsX.add((width * 870)/1280);
-        positionsY.add((height * 200)/720);
+        positionsX.add((width * w3)/1280);
+        positionsY.add((height * h3)/720);
 
         // Sixth position
-        positionsX.add((width * 870)/1280);
-        positionsY.add((height * 420)/720);
+        positionsX.add((width * w4)/1280);
+        positionsY.add((height * h3)/720);
 
         // Seventh position
-        positionsX.add((width * 460)/1280);
-        positionsY.add((height * 500)/720);
+        positionsX.add((width * w5)/1280);
+        positionsY.add((height * h2)/720);
 
         // Eighth position
-        positionsX.add((width * 50)/1280);
-        positionsY.add((height * 500)/720);
+        positionsX.add((width * w5)/1280);
+        positionsY.add((height * h1)/720);
 
         panelWidth = Game.DECK_COLS*cardWidth + (Game.DECK_COLS-1)*hgap;
         panelHeight = Game.DECK_ROWS*cardHeight + (Game.DECK_ROWS-1)*vgap;
@@ -195,7 +199,8 @@ public class UI extends JFrame {
 
         panels.get(0).setBounds(positionsX.get(0), positionsY.get(0), panelWidth, panelHeight);
         mainPanel.add(panels.get(0));
-        for(int i=1;i<4;i++){
+        //number of card sets
+        for(int i=1;i<8;i++){
             mainPanel.add(panels.get(i));
             panels.get(i).setBounds(positionsX.get(i), positionsY.get(i), panelWidth/2, panelHeight/2);
         }
