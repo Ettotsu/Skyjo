@@ -1,21 +1,18 @@
 package org.skyjo.ui;
 
 import org.skyjo.game.Game;
-import org.skyjo.game.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedHashMap;
 
 public class PlayersWindow extends JOptionPane {
-    public static final int MIN_PLAYERS = 2, MAX_PLAYERS = 8;
-    private int nbPlayers=0;
+    public static final int MIN_PLAYERS = 2, MAX_PLAYERS = 8; // Min and max number of players
+    private int nbPlayers=0; // Number of players in the game
 
         public PlayersWindow(Game game){
             super("Number of players");
             this.setSize(200,100);
             this.setVisible(true);
-
 
             JSpinner playersSpinner = new JSpinner(new SpinnerNumberModel(MIN_PLAYERS, MIN_PLAYERS, MAX_PLAYERS, 1));
             if(showOptionDialog(null, playersSpinner,"Enter player number",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null)==JOptionPane.OK_OPTION){

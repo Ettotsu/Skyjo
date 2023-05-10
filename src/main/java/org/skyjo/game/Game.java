@@ -12,17 +12,14 @@ public class Game {
     private Card discard=null;
     private LinkedHashMap<Integer, Player> playersMap;
 
-    UI window;
+    UI ui; // UI object
 
     public Game(){
-
     }
-
 
     public int getEnd(){
             return endgame;
         }
-
 
     public void makePlayersMap(int nbPlayers, String[] names){
         this.nbPlayers = nbPlayers;
@@ -30,15 +27,13 @@ public class Game {
         for(int i=1;i<=nbPlayers;i++){
             playersMap.put(i,new Player(i, names[i]));
         }
-        System.out.println("Players map set");
     }
 
-    public void getUI(UI window){
-        this.window = window;
+    public void getUI(UI ui){
+        this.ui = ui;
     }
 
     public void startGame(){
-        System.out.println("Game started");
         stack = new CardStack();
         stack.printCards();
         for(int i=1;i<=this.nbPlayers;i++){
@@ -48,6 +43,7 @@ public class Game {
         }
         stack.printCards();
         System.out.println("Number of players: " + nbPlayers);
+        ui.gameInterface();
 
 
     }
