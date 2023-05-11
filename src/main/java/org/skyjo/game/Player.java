@@ -11,7 +11,6 @@ public class Player {
 
 
     public Player(int number, String name){
-        deck = new Card[DECK_ROWS][DECK_COLS];
         this.number = number;
         if(name.equals("")) {
             this.name = "Player " + number;
@@ -38,10 +37,11 @@ public class Player {
     public int getScore(){
         return this.score;
     }
-    public void drawInitialDeck(CardStack list, int row, int col){
+    public void drawInitialDeck(CardStack stack, int row, int col){
+        deck = new Card[DECK_ROWS][DECK_COLS];
         for(int i=0;i<row;i++){
             for(int j=0;j<col;j++){
-                deck[i][j] = list.drawCard();
+                deck[i][j] = stack.drawCard();
             }
         }
     }

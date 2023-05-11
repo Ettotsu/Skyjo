@@ -52,9 +52,9 @@ public class Assets {
         this.cardBack = new ImageIcon(tmp.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
         this.cardBackSmall = new ImageIcon(tmp.getScaledInstance(cardWidth/2, cardHeight/2, Image.SCALE_SMOOTH));
         // Cards
-        this.cards = new ImageIcon[14];
-        this.cardsSmall = new ImageIcon[14];
-        for (int i=-2;i<12;i++) {
+        this.cards = new ImageIcon[15];
+        this.cardsSmall = new ImageIcon[15];
+        for (int i=-2;i<=12;i++) {
             tmp = new ImageIcon("src/main/resources/assets/cards/front_" + i + ".png").getImage();
             this.cards[i+2] = new ImageIcon(tmp.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
             this.cardsSmall[i+2] = new ImageIcon(tmp.getScaledInstance(cardWidth/2, cardHeight/2, Image.SCALE_SMOOTH));

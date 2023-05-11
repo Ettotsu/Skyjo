@@ -8,50 +8,41 @@ import java.awt.*;
 
 public class CardButton extends JButton implements CardInterface {
 
-    private int id, value;
-    private boolean isFaceUp;
+    private int id;
 
     private Assets assets;
     private Game game;
 
+    private Card card;
+
 
     public CardButton(int id, Assets assets, Game game) {
         this.id = id;
-        this.isFaceUp = false;
         this.assets = assets;
         this.game = game;
 
+        this.setBorderPainted(false);
+
+        setCard();
 
         this.setIcon(this.assets.getCardBack());
 
-        this.setBorderPainted(false);
-        this.setContentAreaFilled(false);
-
         this.addActionListener(e -> {
-            setCard();
-            this.isFaceUp=true;
-
-
+            card.setFaceUp();
         });
     }
     public void setCard() {
-        int row;
-
-        Card card = game.getPlayerCard(game.getCurrentPlayer(),this.id / (Game.DECK_COLS), this.id % (Game.DECK_COLS));
-        this.isFaceUp = card.isFaceUp();
-        this.value = card.getValue();
+        card = game.getPlayerCard(game.getCurrentPlayer(),this.id / (Game.DECK_COLS), this.id % (Game.DECK_COLS));
     }
 
     public void setFaceUp() {
-        this.isFaceUp = !this.isFaceUp;
+        card.setFaceUp();
     }
-
-
 
     @Override
     public void paint(Graphics g) {
-        if(isFaceUp) {
-            setIcon(assets.getCard(value+2));
+        if(card.isFaceUp()) {
+            setIcon(assets.getCard(card.getValue()+2));
         } else {
             setIcon(assets.getCardBack());
         }

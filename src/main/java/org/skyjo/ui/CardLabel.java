@@ -1,5 +1,6 @@
 package org.skyjo.ui;
 
+import org.skyjo.game.Card;
 import org.skyjo.game.Game;
 
 import javax.swing.*;
@@ -10,9 +11,14 @@ public class CardLabel extends JLabel implements CardInterface {
     private boolean isFaceUp = false;
 
     private Assets assets;
+    private Game game;
 
     public CardLabel(int rank, int id, Assets assets, Game game) {
+        this.rank = rank;
+        this.id = id;
         this.assets = assets;
+        this.game = game;
+
         this.setIcon(this.assets.getCardBackSmall());
     }
 
@@ -21,6 +27,12 @@ public class CardLabel extends JLabel implements CardInterface {
 
     public void setFaceUp() {
         this.isFaceUp = !this.isFaceUp;
+    }
+
+    public void setCard() {
+        Card card = game.getPlayerCard(game.getCurrentPlayer() + rank, this.id / (Game.DECK_COLS), this.id % (Game.DECK_COLS));
+        this.isFaceUp = card.isFaceUp();
+        this.value = card.getValue();
     }
 
 

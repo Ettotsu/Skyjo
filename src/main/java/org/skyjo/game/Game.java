@@ -7,14 +7,16 @@ import java.util.LinkedHashMap;
 public class Game {
 
     public static final int DECK_ROWS = 3, DECK_COLS = 4;
-    private int nbPlayers=0;
-
-    private boolean isEnded;
-    private int currentPlayer=1;
+    private int nbPlayers; // Number of players
+    private int currentPlayer; // Number of the player who is playing
+    private boolean firstRoundDone=false; // True if the players have chosen their 2 cards
+    private int cardsSelected=0; // Number of cards selected by the player during the first round
+    private int endRound; // Number of the player who ends the round
+    private boolean discardChosen=false; // True if the player has chosen to put the card from the stack on the discard pile
 
 
     private CardStack stack;
-    private Card discard=null;
+    private Card discard;
     private LinkedHashMap<Integer, Player> playersMap;
 
     UI ui; // UI object
@@ -44,32 +46,55 @@ public class Game {
         this.ui = ui;
     }
 
+
     public Card getPlayerCard(int player, int row, int col){
-        return playersMap.get(player).getCard(row,col);
+        return this.playersMap.get(player).getCard(row,col);
     }
 
     public int getCurrentPlayer() {
-        return currentPlayer;
+        return this.currentPlayer;
     }
     public int getNbPlayers() {
-        return nbPlayers;
+        return this.nbPlayers;
     }
 
-    public void startGame(){
-        boolean isEnded = false;
-        int isPlaying = 1;
+    public boolean isFirstRoundDone() {
+        return this.firstRoundDone;
+    }
+
+    public void resetGame() {
+        this.currentPlayer = 1;
+        this.firstRoundDone = false;
+        this.cardsSelected = 0;
+        this.endRound = 0;
+        this.discardChosen = false;
         stack = new CardStack();
         stack.printCards();
+        discard = stack.drawCard();
+
+
         for(int i=1;i<=this.nbPlayers;i++){
             playersMap.get(i).drawInitialDeck(stack,DECK_ROWS,DECK_COLS);
             playersMap.get(i).printCards();
             System.out.println(playersMap.get(i).getName() + " has " + playersMap.get(i).getScore() + " points");
         }
+    }
+
+    public void startGame() {
+        this.resetGame();
+
         stack.printCards();
         System.out.println("Number of players: " + nbPlayers);
 
         ui.gameInterface();
 
+    }
+
+    public Card getDiscard() {
+        return this.discard;
+    }
+    public String getPlayerName(int value){
+        return playersMap.get(value).getName();
     }
 }
 

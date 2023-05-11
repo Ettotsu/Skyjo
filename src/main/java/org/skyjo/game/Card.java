@@ -3,6 +3,7 @@ package org.skyjo.game;
 public class Card {
     private boolean isFaceUp = false;
     private int value=0;
+    private boolean blank=false;
 
     public Card(){}
     public Card(int value){
