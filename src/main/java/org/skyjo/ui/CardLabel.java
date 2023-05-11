@@ -1,52 +1,35 @@
 package org.skyjo.ui;
 
+import org.skyjo.game.Game;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class CardLabel extends JLabel implements CardInterface {
-
+    private int rank, id, value;
     private boolean isFaceUp = false;
-    private int value;
-    private Image img;
-    private Image imgHidden; // Image of the hidden card
-    private int width, height;
 
+    private Assets assets;
 
-    public CardLabel(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.setPreferredSize(new java.awt.Dimension(this.width, this.height));
-
-        this.img = new ImageIcon("src/main/resources/assets/cards/front_" + this.value + ".png").getImage();
-        this.img = this.img.getScaledInstance(width,height,Image.SCALE_SMOOTH);
-        this.imgHidden = new ImageIcon("src/main/resources/assets/cards/back.png").getImage();
-        this.imgHidden = this.imgHidden.getScaledInstance(width,height,Image.SCALE_SMOOTH);
-
-        this.updateImage();
+    public CardLabel(int rank, int id, Assets assets, Game game) {
+        this.assets = assets;
+        this.setIcon(this.assets.getCardBackSmall());
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setValue() {
     }
 
-    public void setFaceUp(boolean isFaceUp) {
-        this.isFaceUp = isFaceUp;
-        this.updateImage();
+    public void setFaceUp() {
+        this.isFaceUp = !this.isFaceUp;
     }
-    public void updateImage() {
-        if (isFaceUp) {
-            setIcon(new ImageIcon(img));
-        } else {
-            setIcon(new ImageIcon(imgHidden));
-        }
-    }
+
 
     @Override
     public void paint(Graphics g) {
         if(isFaceUp) {
-            setIcon(new ImageIcon(img));
+            setIcon(assets.getCardSmall(value));
         } else {
-            setIcon(new ImageIcon(imgHidden));
+            setIcon(assets.getCardBackSmall());
         }
         super.paint(g);
     }

@@ -46,6 +46,10 @@ public class Player {
         }
     }
 
+    public Card getCard(int row, int col){
+        return this.deck[row][col];
+    }
+
     public void addScore(int score){
         this.score = this.score + score;
     }

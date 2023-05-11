@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PlayersWindow extends JOptionPane {
-    public static final int MIN_PLAYERS = 2, MAX_PLAYERS = 8; // Min and max number of players
+    public static final int MIN_PLAYERS = 2, MAX_PLAYERS = 8; // Min a  nd max number of players
     private int nbPlayers=0; // Number of players in the game
 
         public PlayersWindow(Game game){

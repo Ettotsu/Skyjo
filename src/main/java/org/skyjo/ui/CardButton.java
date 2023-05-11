@@ -1,58 +1,59 @@
 package org.skyjo.ui;
 
+import org.skyjo.game.Card;
+import org.skyjo.game.Game;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class CardButton extends JButton implements CardInterface {
 
-    private boolean isFaceUp = false;
-    private int value;
-    private int width, height;
-    private Image img;
-    private Image imgHidden; // Image of the hidden card
+    private int id, value;
+    private boolean isFaceUp;
+
+    private Assets assets;
+    private Game game;
 
 
-    public CardButton(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.setPreferredSize(new java.awt.Dimension(this.width, this.height));
+    public CardButton(int id, Assets assets, Game game) {
+        this.id = id;
+        this.isFaceUp = false;
+        this.assets = assets;
+        this.game = game;
+
+
+        this.setIcon(this.assets.getCardBack());
+
         this.setBorderPainted(false);
         this.setContentAreaFilled(false);
 
-        this.img = new ImageIcon("src/main/resources/assets/cards/front_" + this.value + ".png").getImage();
-        this.img = this.img.getScaledInstance(width,height,Image.SCALE_SMOOTH);
-        this.imgHidden = new ImageIcon("src/main/resources/assets/cards/back.png").getImage();
-        this.imgHidden = this.imgHidden.getScaledInstance(width,height,Image.SCALE_SMOOTH);
+        this.addActionListener(e -> {
+            setCard();
+            this.isFaceUp=true;
 
 
-        this.updateImage();
+        });
+    }
+    public void setCard() {
+        int row;
+
+        Card card = game.getPlayerCard(game.getCurrentPlayer(),this.id / (Game.DECK_COLS), this.id % (Game.DECK_COLS));
+        this.isFaceUp = card.isFaceUp();
+        this.value = card.getValue();
+    }
+
+    public void setFaceUp() {
+        this.isFaceUp = !this.isFaceUp;
     }
 
 
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public void setFaceUp(boolean isfaceUp) {
-        this.isFaceUp = isFaceUp;
-        this.updateImage();
-    }
-
-
-    public void updateImage(){
-        if(isFaceUp) {
-            setIcon(new ImageIcon(img));
-        } else {
-            setIcon(new ImageIcon(imgHidden));
-        }
-    }
 
     @Override
     public void paint(Graphics g) {
         if(isFaceUp) {
-            setIcon(new ImageIcon(img));
+            setIcon(assets.getCard(value+2));
         } else {
-            setIcon(new ImageIcon(imgHidden));
+            setIcon(assets.getCardBack());
         }
         super.paint(g);
     }
