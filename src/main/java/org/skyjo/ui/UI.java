@@ -12,6 +12,8 @@ import java.util.LinkedHashMap;
 
 public class UI extends JFrame {
 
+    public static final int ORIGINAL_WIDTH = 1280, ORIGINAL_HEIGHT = 720, GAP=12;// Original width and height of the window
+
     private Game game; // Game object
 
     private PropertiesFile prop; // Properties file
@@ -31,6 +33,7 @@ public class UI extends JFrame {
 
 
     private LinkedHashMap<Integer, JPanel> panels; // Map of the panels containing the cards buttons and labels
+    private StackButton stackButton; // Stack button
     private DiscardButton discardButton; // Discard button
 
 
@@ -58,8 +61,6 @@ public class UI extends JFrame {
      * We could have put the values in a file, but we decided to hardcode them for optimization purposes.
      */
     private void calculateSizes(){
-        final int h0 = 420, h1 = 170, h2 = 40; // Duplicated values
-        final int w0 = 40, w1 = 1050;
 
         positionsX = new int[8];
         positionsY = new int[8];
@@ -67,44 +68,44 @@ public class UI extends JFrame {
         width = this.getWidth();
         height = this.getHeight();
 
-        hgap = (width * 12)/1280;
-        vgap = (height * 12)/720;
+        hgap = (width * GAP)/ ORIGINAL_WIDTH;
+        vgap = (height * GAP)/ORIGINAL_HEIGHT;
 
         // First position (player)
-        positionsX[0] = (width * 320)/1280;
-        positionsY[0] = (height * 300)/720;
+        positionsX[0] = (width * 320)/ORIGINAL_WIDTH; // La fleeemme de faire des constantes
+        positionsY[0] = (height * 300)/ORIGINAL_HEIGHT;
         // Second position
-        positionsX[1] = (width * w0)/1280;
-        positionsY[1] = (height * h0)/720;
+        positionsX[1] = (width * 40)/ORIGINAL_WIDTH;
+        positionsY[1] = (height * 420)/ORIGINAL_HEIGHT;
         // Third position
-        positionsX[2] = (width * w0)/1280;
-        positionsY[2] = (height * h1)/720;
+        positionsX[2] = (width * 40)/ORIGINAL_WIDTH;
+        positionsY[2] = (height * 170)/ORIGINAL_HEIGHT;
         // Fourth position
-        positionsX[3] = (width * 290)/1280;
-        positionsY[3] = (height * h2)/720;
+        positionsX[3] = (width * 290)/ORIGINAL_WIDTH;
+        positionsY[3] = (height * 40)/ORIGINAL_HEIGHT;
         // Fifth position
-        positionsX[4] = (width * 550)/1280;
-        positionsY[4] = (height * h2)/720;
+        positionsX[4] = (width * 550)/ORIGINAL_WIDTH;
+        positionsY[4] = (height * 40)/ORIGINAL_HEIGHT;
         // Sixth position
-        positionsX[5] = (width * 810)/1280;
-        positionsY[5] = (height * h2)/720;
+        positionsX[5] = (width * 810)/ORIGINAL_WIDTH;
+        positionsY[5] = (height * 40)/ORIGINAL_HEIGHT;
         // Seventh position
-        positionsX[6] = (width * w1)/1280;
-        positionsY[6] = (height * h1)/720;
+        positionsX[6] = (width * 1050)/ORIGINAL_WIDTH;
+        positionsY[6] = (height * 170)/ORIGINAL_HEIGHT;
         // Eighth position
-        positionsX[7] = (width * w1)/1280;
-        positionsY[7] = (height * h0)/720;
+        positionsX[7] = (width * 1050)/ORIGINAL_WIDTH;
+        positionsY[7] = (height * 420)/ORIGINAL_HEIGHT;
 
         // Stack position
-        stackX = (width * 40)/1280;
-        stackY = (height * 40)/720;
+        stackX = (width * 810)/ORIGINAL_WIDTH;
+        stackY = (height * 330)/ORIGINAL_HEIGHT;
 
         // Discard pile position
-        discardX = (width * 810)/1280;
-        discardY = (height * 500)/720;
+        discardX = (width * 810)/ORIGINAL_WIDTH;
+        discardY = (height * 520)/ORIGINAL_HEIGHT;
 
-        this.cardWidth = (width * 80)/1280; // 80 is the original width of the image
-        this.cardHeight = (height * 112)/720; // 112 is the original height of the image
+        this.cardWidth = (width * 80)/ORIGINAL_WIDTH; // 80 is the original width of the image
+        this.cardHeight = (height * 112)/ORIGINAL_HEIGHT; // 112 is the original height of the image
 
         panelWidth = Game.DECK_COLS*cardWidth + (Game.DECK_COLS-1)*hgap;
         panelHeight = Game.DECK_ROWS*cardHeight + (Game.DECK_ROWS-1)*vgap;
@@ -147,7 +148,7 @@ public class UI extends JFrame {
 
         JLayeredPane layeredPane = new JLayeredPane();
 
-        mainPanel.setBounds(0, (500*height)/720, width, height);
+        mainPanel.setBounds(0, (500*height)/ORIGINAL_HEIGHT, width, height);
         JLabel background = new JLabel(assets.getMenuBackground());
         background.setBounds(0, 0, width, height);
 
@@ -248,9 +249,12 @@ public class UI extends JFrame {
                 }
             }
         }
-
+        stackButton = new StackButton(assets, game);
+        stackButton.setBounds(stackX, stackY, cardWidth, cardHeight);
         discardButton = new DiscardButton(assets, game);
         discardButton.setBounds(discardX, discardY, cardWidth, cardHeight);
+
+        mainPanel.add(stackButton);
         mainPanel.add(discardButton);
 
         mainPanel.setLayout(null);

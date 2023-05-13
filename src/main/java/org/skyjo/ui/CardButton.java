@@ -6,7 +6,7 @@ import org.skyjo.game.Game;
 import javax.swing.*;
 import java.awt.*;
 
-public class CardButton extends JButton implements CardInterface {
+public class CardButton extends JButton {
 
     private int id;
 
@@ -28,15 +28,36 @@ public class CardButton extends JButton implements CardInterface {
         this.setIcon(this.assets.getCardBack());
 
         this.addActionListener(e -> {
-            card.setFaceUp();
+            if(!game.getFirstRoundDone()) {
+                if(game.getCurrentPlayer()==game.getNbPlayers()) {
+                    if(game.getCardSelected()) {
+                        game.setFirstRoundDone();
+                        game.setCurrentPlayer(game.getMaxScore());
+                    }
+                    else {
+                        card.setFaceUp();
+                    }
+                }
+                else {
+                    if(game.getCardSelected()) {
+                        game.incrementCurrentPlayer();
+                        System.out.println("on a incremente wallah");
+                        this.setCard();
+                        // Sleep peut etre pas mal ici
+                        this.repaint();
+                    }
+                    else {
+                        game.setCardSelected();
+                    }
+                    card.setFaceUp();
+                }
+            }
         });
+
+
     }
     public void setCard() {
         card = game.getPlayerCard(game.getCurrentPlayer(),this.id / (Game.DECK_COLS), this.id % (Game.DECK_COLS));
-    }
-
-    public void setFaceUp() {
-        card.setFaceUp();
     }
 
     @Override

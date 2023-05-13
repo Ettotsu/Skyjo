@@ -16,6 +16,7 @@ public class MenuButton extends JButton {
         this.icon = icon;
         this.iconHover = iconHover;
         this.setIcon(this.icon);
+        this.paint(this.getGraphics());
 
         this.addMouseListener(new MouseAdapter() {
             @Override

@@ -37,6 +37,9 @@ public class Player {
     public int getScore(){
         return this.score;
     }
+    public void addScore(int score){
+        this.score = this.score + score;
+    }
     public void drawInitialDeck(CardStack stack, int row, int col){
         deck = new Card[DECK_ROWS][DECK_COLS];
         for(int i=0;i<row;i++){
@@ -50,7 +53,4 @@ public class Player {
         return this.deck[row][col];
     }
 
-    public void addScore(int score){
-        this.score = this.score + score;
-    }
 }

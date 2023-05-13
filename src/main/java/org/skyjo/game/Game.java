@@ -3,6 +3,7 @@ package org.skyjo.game;
 import org.skyjo.ui.UI;
 
 import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
 public class Game {
 
@@ -10,14 +11,16 @@ public class Game {
     private int nbPlayers; // Number of players
     private int currentPlayer; // Number of the player who is playing
     private boolean firstRoundDone=false; // True if the players have chosen their 2 cards
-    private int cardsSelected=0; // Number of cards selected by the player during the first round
+    private boolean cardSelected=false; // True if the player has chosen a card (for the first round)
     private int endRound; // Number of the player who ends the round
     private boolean discardChosen=false; // True if the player has chosen to put the card from the stack on the discard pile
 
 
     private CardStack stack;
     private Card discard;
-    private LinkedHashMap<Integer, Player> playersMap;
+    private LinkedHashMap<Integer, Player> playersMap; // LinkedHashMap to keep the order of the players
+
+    private TreeMap<Integer, Integer> scoresMap; // TreeMap to sort the scores of the players
 
     UI ui; // UI object
 
@@ -54,18 +57,52 @@ public class Game {
     public int getCurrentPlayer() {
         return this.currentPlayer;
     }
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+    public void incrementCurrentPlayer() {
+        if(this.currentPlayer>this.nbPlayers) {
+            this.currentPlayer = 1;
+        }
+        else {
+            this.currentPlayer++;
+        }
+    }
     public int getNbPlayers() {
         return this.nbPlayers;
     }
 
-    public boolean isFirstRoundDone() {
+    public boolean getFirstRoundDone() {
         return this.firstRoundDone;
     }
+public void setFirstRoundDone() {
+        this.firstRoundDone = true;
+    }
+    public boolean getCardSelected() {
+        return this.cardSelected;
+    }
+
+    /**
+     * Sets the cardSelected variable to true
+     */
+    public void setCardSelected() {
+        this.cardSelected = true;
+    }
+
+    /**
+     * Sets the cardSelected variable to false
+     * We could have made a method that inverts the cardSelected boolean, but we chose not to for security purposes
+     */
+    public void unsetCardSelected() {
+        this.cardSelected = false;
+    }
+
+
 
     public void resetGame() {
         this.currentPlayer = 1;
         this.firstRoundDone = false;
-        this.cardsSelected = 0;
+        this.cardSelected = false;
         this.endRound = 0;
         this.discardChosen = false;
         stack = new CardStack();
@@ -93,8 +130,21 @@ public class Game {
     public Card getDiscard() {
         return this.discard;
     }
+
     public String getPlayerName(int value){
         return playersMap.get(value).getName();
+    }
+
+    public void addScore(int player, int score){
+        playersMap.get(player).addScore(score);
+    }
+
+    public int getMaxScore() {
+        TreeMap<Integer, Integer> scoresMap = new TreeMap<>();
+        for(int i=1;i<=nbPlayers;i++){
+            scoresMap.put(playersMap.get(i).getScore(),i);
+        }
+        return scoresMap.lastEntry().getValue();
     }
 }
 
