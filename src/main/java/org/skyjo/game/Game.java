@@ -2,6 +2,7 @@ package org.skyjo.game;
 
 import org.skyjo.ui.UI;
 
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
 
@@ -19,8 +20,6 @@ public class Game {
     private CardStack stack;
     private Card discard;
     private LinkedHashMap<Integer, Player> playersMap; // LinkedHashMap to keep the order of the players
-
-    private TreeMap<Integer, Integer> scoresMap; // TreeMap to sort the scores of the players
 
     UI ui; // UI object
 
@@ -101,12 +100,20 @@ public class Game {
         playersMap.get(player).addScore(score);
     }
     public int getMaxScore() {
-        TreeMap<Integer, Integer> scoresMap = new TreeMap<>();
+        TreeMap<Integer, Integer> map = new TreeMap<>(Comparator.naturalOrder());
         for(int i=1;i<=nbPlayers;i++){
-            scoresMap.put(playersMap.get(i).getScore(),i);
+            map.put(playersMap.get(i).getScore(),i);
         }
-        return scoresMap.lastEntry().getValue();
+        System.out.println("The winner is " + getPlayer(map.lastEntry().getValue()).getName() + " with " + map.lastEntry().getKey() + " points");
+        return map.lastEntry().getValue();
+
     }
+    public void resetlAllScores() {
+        for(int i=1;i<=nbPlayers;i++){
+            playersMap.get(i).setScore(0);
+        }
+    }
+
     private boolean over120(LinkedHashMap<Integer, Player> playersMap){
         for(int i=1;i<=nbPlayers;i++){
             if(playersMap.get(i).getScore()>=120){

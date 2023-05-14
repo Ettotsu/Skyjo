@@ -35,21 +35,24 @@ public class CardButton extends JButton implements CardInterface {
                     if (game.getCurrentPlayer() == game.getNbPlayers()) {
                         if (game.getCardSelected()) {
                             card.setFaceUp();
+                            game.getPlayer(game.getCurrentPlayer()).addScore(card.getValue());
                             game.setFirstRoundDone();
                             game.setCardSelected(false);
                             game.setCurrentPlayer(game.getMaxScore());
+                            game.resetlAllScores();
                             ui.setAllCards();
                             ui.EnableAllCards(false);
                             ui.putPlayerInTitle();
                             ui.updatePlayerLabel();
                             ui.repaint();
-                            System.out.println("Current player = " + game.getCurrentPlayer() + ", max score = " + game.getMaxScore());
                         } else {
                             card.setFaceUp();
+                            game.getPlayer(game.getCurrentPlayer()).addScore(card.getValue());
                             game.setCardSelected(true);
                         }
                     } else {
                         card.setFaceUp();
+                        game.getPlayer(game.getCurrentPlayer()).addScore(card.getValue());
                         if(game.getCardSelected()) {
                             ui.incrementCurrentPlayer();
                             game.setCardSelected(false);
