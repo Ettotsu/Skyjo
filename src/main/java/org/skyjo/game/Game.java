@@ -108,6 +108,15 @@ public class Game {
         return this.discardChosen;
     }
 
+    public void checkPerfectColumn(int player) {
+        int value = this.getPlayer(player).checkPerfectColumn();
+        if(value != -3){
+            Card card = new Card(value);
+            card.setFaceUp();
+            this.setDiscard(card);
+        }
+    }
+
     public void addScore(int player, int score) {
         playersMap.get(player).addScore(score);
     }

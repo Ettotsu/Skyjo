@@ -20,9 +20,9 @@ public class Player {
     public void printCards() {
         Card card;
         int cardCounter = 0;
-        for (int i = 0; i < deck.length; i++) {
-            for (int j = 0; j < deck[i].length; j++) {
-                card = this.deck[i][j];
+        for (Card[] cards : deck) {
+            for (Card value : cards) {
+                card = value;
                 if (card.isFaceUp()) {
                     System.out.print(card.getValue() + " ");
                 } else {
@@ -35,7 +35,6 @@ public class Player {
             }
         }
     }
-
 
     public String getName() {
         return name;
@@ -57,6 +56,7 @@ public class Player {
             }
         }
     }
+
     public void drawInitialDeck(CardStack stack, int row, int col){
         deck = new Card[Game.DECK_ROWS][Game.DECK_COLS];
         for(int i=0;i<row;i++){
@@ -65,25 +65,26 @@ public class Player {
             }
         }
     }
-    public void checkPerfectColumn() {
-        int firstValue;
-        for(int i=0; i<Game.DECK_COLS;i++) {
+
+    public Card getCard(int row, int col){
+        return this.deck[row][col];
+    }
+
+    public int checkPerfectColumn() {
+        int firstValue = -3;
+        for(int i=0;i<Game.DECK_COLS; i++) {
             firstValue = deck[0][i].getValue();
             for(int j=1;j<Game.DECK_ROWS;j++) {
                 if(deck[j][i].getValue() != firstValue) {
-                    return;
+                    return -3;
                 }
             }
             for(int j=0;j<Game.DECK_ROWS;j++) {
                 deck[j][i].setBlank();
             }
         }
+        return firstValue;
     }
-
-    public Card getCard(int row, int col){
-        return this.deck[row][col];
-    }
-
 
     public Card switchCard(Card card, int row, int col){
         Card temp = this.deck[row][col];
@@ -93,9 +94,9 @@ public class Player {
     public int getFlippedScore() {
         int score = 0;
         Card card;
-        for (int i = 0; i < deck.length; i++) {
-            for (int j = 0; j < deck[i].length; j++) {
-                card = this.deck[i][j];
+        for (Card[] cards : deck) {
+            for (Card value : cards) {
+                card = value;
                 if (card.isFaceUp()) {
                     score += card.getValue();
                 }
