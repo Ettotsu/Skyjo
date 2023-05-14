@@ -7,7 +7,11 @@ import java.util.Scanner;
 public class CLI {
     private Game game ;
 
-    public CLI(){
+    public CLI(Game game){
+        this.game = game;
+
+        this.setPlayers();
+        this.startGame();
     }
     public void printDiscard(){
         System.out.println("Discard : "+this.game.getDiscard().getValue());
@@ -23,7 +27,6 @@ public class CLI {
         return n;
     }
     public void setPlayers(){
-        this.game = new Game();
         int n = 0;
         Scanner scanner = new Scanner(System.in);
         while (n<2 || n>8){
