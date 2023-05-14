@@ -6,9 +6,9 @@ import org.skyjo.game.Game;
 import javax.swing.*;
 import java.awt.*;
 
-public class DiscardButton extends JButton {
-    private Assets assets;
-    private Game game;
+public class DiscardButton extends JButton implements CardInterface {
+    private final Assets assets;
+    private final Game game;
     private Card card;
 
     public DiscardButton(Assets assets, Game game) {
@@ -18,14 +18,32 @@ public class DiscardButton extends JButton {
         this.setBorderPainted(false);
 
         setCard();
+
+        this.addActionListener(e -> {
+            if(game.getFirstRoundDone()) {
+                if(game.getStackChosen()) {
+                    game.setDiscard(game.getStack().drawCard());
+                }
+                else {
+
+                }
+               this.setEnabled(false);
+
+            }
+            else {
+                    System.out.println("First round not over");
+            }
+        });
     }
     public void setCard(){
         card = game.getDiscard();
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         setIcon(assets.getCard(card.getValue() + 2));
-        super.paint(g);
+        setDisabledIcon(assets.getCard(card.getValue() + 2));
+        this.repaint();
     }
 }

@@ -1,17 +1,14 @@
 package org.skyjo.game;
 
-import static org.skyjo.game.Game.DECK_COLS;
-import static org.skyjo.game.Game.DECK_ROWS;
 
 public class Player {
-    private String name;
-    private int number=0, score=0;
+    private final String name;
+    private int score=0;
     private Card[][] deck;
 
 
 
     public Player(int number, String name){
-        this.number = number;
         if(name.equals("")) {
             this.name = "Player " + number;
         }
@@ -19,6 +16,7 @@ public class Player {
             this.name = name;
         }
     }
+
     public void printCards() {
         Card card;
         int cardCounter = 0;
@@ -38,23 +36,46 @@ public class Player {
         }
     }
 
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public void setScore(int score){
+    public void setScore(int score) {
         this.score = this.score + score;
     }
-    public int getScore(){
+    public int getScore() {
         return this.score;
     }
-    public void addScore(int score){
+    public void addScore(int score) {
         this.score = this.score + score;
     }
+
+    public void updateScore() {
+        for (Card[] cards : deck) {
+            for (Card card : cards) {
+                    this.score = this.score + card.getValue();
+            }
+        }
+    }
     public void drawInitialDeck(CardStack stack, int row, int col){
-        deck = new Card[DECK_ROWS][DECK_COLS];
+        deck = new Card[Game.DECK_ROWS][Game.DECK_COLS];
         for(int i=0;i<row;i++){
             for(int j=0;j<col;j++){
                 deck[i][j] = stack.drawCard();
+            }
+        }
+    }
+    public void checkPerfectColumn() {
+        int firstValue;
+        for(int i=0; i<Game.DECK_COLS;i++) {
+            firstValue = deck[0][i].getValue();
+            for(int j=1;j<Game.DECK_ROWS;j++) {
+                if(deck[j][i].getValue() != firstValue) {
+                    return;
+                }
+            }
+            for(int j=0;j<Game.DECK_ROWS;j++) {
+                deck[j][i].setBlank();
             }
         }
     }
@@ -63,10 +84,7 @@ public class Player {
         return this.deck[row][col];
     }
 
-    public void flipCard(int row, int col){
-        Card currentCard = this.getCard(row,col);
-        currentCard.setFaceUp();
-    }
+
     public Card switchCard(Card card, int row, int col){
         Card temp = this.deck[row][col];
         this.deck[row][col] = card;

@@ -6,8 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MenuButton extends JButton {
-    private ImageIcon icon;
-    private ImageIcon iconHover;
+    private final ImageIcon icon;
+    private final ImageIcon iconHover;
     private boolean isHovered = false;
 
     public MenuButton(ImageIcon icon, ImageIcon iconHover){
@@ -16,7 +16,6 @@ public class MenuButton extends JButton {
         this.icon = icon;
         this.iconHover = iconHover;
         this.setIcon(this.icon);
-        this.paint(this.getGraphics());
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -33,12 +32,13 @@ public class MenuButton extends JButton {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         if(isHovered) {
             this.setIcon(this.iconHover);
         } else {
             this.setIcon(this.icon);
         }
-        super.paint(g);
+        this.repaint();
     }
 }

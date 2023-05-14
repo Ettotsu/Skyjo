@@ -4,39 +4,41 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CardStack {
-    private ArrayList<Card> CardList;
+    private ArrayList<Card> cardList;
     public CardStack(){
-        CardList = new ArrayList<>();
+        cardList = new ArrayList<>();
         for(int i=0;i<5;i++){
-            CardList.add(new Card(-2));
+            cardList.add(new Card(-2));
         }
         for(int i=0;i<10;i++){
-            CardList.add(new Card(-1));
+            cardList.add(new Card(-1));
         }
         for(int i=0;i<15;i++){
-            CardList.add(new Card(0));
+            cardList.add(new Card(0));
         }
         for (int i=0;i<120;i++) {
-            CardList.add(new Card(i / 10 + 1));
+            cardList.add(new Card(i / 10 + 1));
         }
 
-        Collections.shuffle(CardList);
+        Collections.shuffle(cardList);
     }
     public void printCards(){
-        for (Card card : CardList) {
+        for (Card card : cardList) {
             System.out.print(card.getValue() + " ");
         }
         System.out.println();
     }
-
+    public void faceUpCard() {
+        cardList.get(cardList.size() - 1).setFaceUp();
+    }
     public Card drawCard(){
-        int nb_of_cards = CardList.size();
-        Card card = CardList.get(nb_of_cards - 1);
-        CardList.remove(nb_of_cards - 1);
+        int nb_of_cards = cardList.size();
+        Card card = cardList.get(nb_of_cards - 1);
+        cardList.remove(nb_of_cards - 1);
         return card;
     }
 
     public Card getLastCard(){
-        return CardList.get(CardList.size()-1);
+        return cardList.get(cardList.size()-1);
     }
 }

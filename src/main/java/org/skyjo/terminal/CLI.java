@@ -61,18 +61,18 @@ public class CLI {
         return chosenCard;
     }
     public void flipTwoCards(){
-        Player currentPlayer;
+        Player player;
         int[] chosenCard = new int[2];
         for (int i = 1; i<=this.game.getNbPlayers(); i++){
-            currentPlayer = game.getPlayerN(i);
+            player = game.getPlayer(i);
             System.out.println("----------------");
             for (int j = 0; j<2; j++){
                 System.out.println("Flip card n°"+i);
-                chosenCard = this.getCard(currentPlayer);
-                currentPlayer.flipCard(chosenCard[0], chosenCard[1]);
+                chosenCard = this.getCard(player);
+                player.getCard(chosenCard[0], chosenCard[1]).setFaceUp();
             }
-            System.out.println(currentPlayer.getName()+", your cards :");
-            currentPlayer.printCards();
+            System.out.println(player.getName()+", your cards :");
+            player.printCards();
         }
     }
     public boolean turn(Player finishing){
@@ -80,37 +80,37 @@ public class CLI {
         Card chosenCard; //drawn from the discard or from the draw
         int[] switchCard; //the card that the user will potentially choose from his cards
 
-        Player currentPlayer = this.game.getPlayerN(this.game.getCurrentPlayer());
-        System.out.println(currentPlayer.getName()+"'s turn.");
+        Player player = this.game.getPlayer(this.game.getCurrentPlayer());
+        System.out.println(player.getName()+"'s turn.");
         this.printDiscard();
         choice = askChoice("draw a new card", "get a card from the discard"); //draw : 0, discard : 1
         if (choice == 0){
-            chosenCard = this.game.getStack();
+            chosenCard = this.game.getStack().drawCard();
             chosenCard.setFaceUp();
             System.out.println("Drawn card : "+chosenCard.getValue());
             choice = askChoice("switch a card", "throw your card in the discard"); //switch : 0, discard : 1
             if (choice == 0){
-                System.out.println(currentPlayer.getName()+", select a card to switch.");
-                switchCard = this.getCard(currentPlayer);
-                chosenCard = currentPlayer.switchCard(chosenCard, switchCard[0], switchCard[1]);
+                System.out.println(player.getName()+", select a card to switch.");
+                switchCard = this.getCard(player);
+                chosenCard = player.switchCard(chosenCard, switchCard[0], switchCard[1]);
                 this.game.setDiscard(chosenCard);
             }
             else{
                 this.game.setDiscard(chosenCard);
-                System.out.println(currentPlayer.getName()+", select a card to turn.");
-                switchCard = this.getCard(currentPlayer);
+                System.out.println(player.getName()+", select a card to turn.");
+                switchCard = this.getCard(player);
                 //verif retournee
-                currentPlayer.flipCard(switchCard[0], switchCard[1]);
+                player.getCard(switchCard[0], switchCard[1]).setFaceUp();
             }
         }
         else{
             chosenCard = this.game.getDiscard();
-            System.out.println(currentPlayer.getName()+", select a card to switch.");
-            switchCard = this.getCard(currentPlayer);
-            chosenCard = currentPlayer.switchCard(chosenCard, switchCard[0], switchCard[1]);
+            System.out.println(player.getName() + ", select a card to switch.");
+            switchCard = this.getCard(player);
+            chosenCard = player.switchCard(chosenCard, switchCard[0], switchCard[1]);
             this.game.setDiscard(chosenCard);
         }
-        currentPlayer.printCards();
+        player.printCards();
         //verif ligne
         //verif cartes tournees
         //changer joueur

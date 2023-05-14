@@ -4,11 +4,12 @@ import org.skyjo.game.Card;
 import org.skyjo.game.Game;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class StackButton extends JButton {
+public class StackButton extends JButton implements CardInterface {
 
-    private Assets assets;
-    private Game game;
+    private final Assets assets;
+    private final Game game;
     private Card card;
 
     public StackButton(Assets assets, Game game) {
@@ -18,12 +19,32 @@ public class StackButton extends JButton {
         this.setBorderPainted(false);
 
         setCard();
+
+        this.addActionListener(e -> {
+            if(game.getFirstRoundDone()) {
+                game.setStackChosen(true);
+                game.getStack().faceUpCard();
+            }
+            else {
+                System.out.println("First round still not over");
+            }
+        });
     }
 
     public void setCard(){
-        setIcon(assets.getCardBack());
+        card = game.getStack().getLastCard();
     }
 
-
-
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (card.isFaceUp()) {
+            setIcon(assets.getCard(card.getValue() + 2));
+            setDisabledIcon(assets.getCard(card.getValue() + 2));
+        } else {
+            setIcon(assets.getCardBack());
+            setDisabledIcon(assets.getCardBack());
+        }
+        this.repaint();
+    }
 }

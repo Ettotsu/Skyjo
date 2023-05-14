@@ -7,11 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CardLabel extends JLabel implements CardInterface {
-    private int rank, id, value;
-    private boolean isFaceUp = false;
+    private final int rank, id;
 
-    private Assets assets;
-    private Game game;
+    private final Assets assets;
+    private final Game game;
+
+    private Card card;
 
     public CardLabel(int rank, int id, Assets assets, Game game) {
         this.rank = rank;
@@ -19,30 +20,27 @@ public class CardLabel extends JLabel implements CardInterface {
         this.assets = assets;
         this.game = game;
 
+        this.setCard();
+
         this.setIcon(this.assets.getCardBackSmall());
     }
 
-    public void setValue() {
-    }
-
-    public void setFaceUp() {
-        this.isFaceUp = !this.isFaceUp;
-    }
-
     public void setCard() {
-        Card card = game.getPlayerCard(game.getCurrentPlayer() + rank, this.id / (Game.DECK_COLS), this.id % (Game.DECK_COLS));
-        this.isFaceUp = card.isFaceUp();
-        this.value = card.getValue();
+        int player = 1 + ((game.getCurrentPlayer() + rank) % (game.getNbPlayers()));
+        card = game.getPlayer(player).getCard(this.id / (Game.DECK_COLS), this.id % (Game.DECK_COLS));
     }
 
 
     @Override
-    public void paint(Graphics g) {
-        if(isFaceUp) {
-            setIcon(assets.getCardSmall(value));
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if(card.isFaceUp()) {
+            setIcon(assets.getCardSmall(card.getValue()+2));
+            setDisabledIcon(assets.getCardSmall(card.getValue()+2));
         } else {
             setIcon(assets.getCardBackSmall());
+            setDisabledIcon(assets.getCardBackSmall());
         }
-        super.paint(g);
+        this.repaint();
     }
 }
