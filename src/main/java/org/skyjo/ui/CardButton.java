@@ -39,24 +39,24 @@ public class CardButton extends JButton implements CardInterface {
                             game.setCardSelected(false);
                             game.setCurrentPlayer(game.getMaxScore());
                             ui.setAllCards();
+                            ui.EnableAllCards(false);
+                            ui.putPlayerInTitle();
+                            ui.updatePlayerLabel();
+                            ui.repaint();
+                            System.out.println("Current player = " + game.getCurrentPlayer() + ", max score = " + game.getMaxScore());
                         } else {
                             card.setFaceUp();
                             game.setCardSelected(true);
-
                         }
                     } else {
                         card.setFaceUp();
-                        if (game.getCardSelected()) {
-
-                            game.incrementCurrentPlayer();
+                        if(game.getCardSelected()) {
+                            ui.incrementCurrentPlayer();
                             game.setCardSelected(false);
 
-
                             ui.setAllCards();
-                            ui.putPlayerInTitle(game.getCurrentPlayer());
-
-                            System.out.println("on a incremente wallah");
-                        } else {
+                        }
+                        else {
                             game.setCardSelected(true);
                         }
 

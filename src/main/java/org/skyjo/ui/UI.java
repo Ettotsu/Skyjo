@@ -197,7 +197,7 @@ public class UI extends JFrame {
     }
 
     public void setAllCards() {
-        for(int i=0; i< Game.DECK_ROWS * Game.DECK_COLS; i++){
+        for(int i=0; i<Game.DECK_ROWS * Game.DECK_COLS;i++){
             ((CardButton) panels.get(0).getComponent(i)).setCard();
         }
         for(int i=1;i<game.getNbPlayers();i++) {
@@ -206,11 +206,16 @@ public class UI extends JFrame {
             }
         }
     }
+    public void EnableAllCards(boolean b) {
+        for(int i=0;i<Game.DECK_ROWS * Game.DECK_COLS;i++) {
+            panels.get(0).getComponent(i).setEnabled(b);
+        }
+    }
 
     public void gameInterface() {
         this.generatePanels();
         this.getContentPane().removeAll();
-
+        assets.unloadMenu();
         assets.loadInGame(width, height, cardWidth, cardHeight);
 
         JPanel mainPanel = new JPanel();
@@ -268,16 +273,18 @@ public class UI extends JFrame {
         DiscardButton discardButton = new DiscardButton(assets, game);
         discardButton.setBounds(discardX, discardY, cardWidth, cardHeight);
 
-        playerLabel = new JLabel("salam") {
+        playerLabel = new JLabel() {
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawChars(game.getPlayer(game.getCurrentPlayer()).getName().toCharArray(), 0, game.getPlayer(game.getCurrentPlayer()).getName().length(), 0, 30);
+                this.repaint();
             }
         };
         playerLabel.setHorizontalAlignment(JLabel.CENTER);
         playerLabel.setBounds(playerX, playerY, panelWidth, 30);
         playerLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+        updatePlayerLabel();
 
         mainPanel.add(stackButton);
         mainPanel.add(discardButton);
@@ -288,25 +295,27 @@ public class UI extends JFrame {
         mainPanel.setBounds(0, 0, width, height);
         layeredPane.setBounds(0, 0, width, height);
 
-
         this.repaint();
         this.revalidate();
 
-        //layeredPane.add(background, 0);
+        layeredPane.add(background, 0);
         layeredPane.add(mainPanel, 1);
         this.getContentPane().add(layeredPane);
 
-
-
-        this.putPlayerInTitle(game.getCurrentPlayer());
-
+        this.putPlayerInTitle();
     }
 
-    public void putPlayerInTitle(int value) {
-        this.setTitle("Fail Your Deutec - " + game.getPlayerName(value) + "'s turn");
+    public void putPlayerInTitle() {
+        this.setTitle("Fail Your Deutec - " + game.getPlayer(game.getCurrentPlayer()).getName() + "'s turn");
     }
 
-    public void updatePlayerLabel(int value) {
-        playerLabel.setText(game.getPlayerName(value) + "'s turn");
+    public void updatePlayerLabel() {
+        playerLabel.setText(game.getPlayer(game.getCurrentPlayer()).getName());
+    }
+
+    public void incrementCurrentPlayer() {
+        game.incrementCurrentPlayer();
+        putPlayerInTitle();
+        updatePlayerLabel();
     }
 }

@@ -41,6 +41,17 @@ public class Assets {
         tmp = new ImageIcon("src/main/resources/assets/menu/quit_hover.png").getImage();
         this.quitHover = new ImageIcon(tmp.getScaledInstance(menuWidth, menuHeight, Image.SCALE_SMOOTH));
     }
+    public void unloadMenu(){
+        this.menuBackground = null;
+        this.start = null;
+        this.startHover = null;
+        this.settings = null;
+        this.settingsHover = null;
+        this.minigame = null;
+        this.minigameHover = null;
+        this.quit = null;
+        this.quitHover = null;
+    }
 
     public void loadInGame(int screenWidth, int screenHeight, int cardWidth, int cardHeight) {
         // Background
@@ -59,6 +70,14 @@ public class Assets {
             this.cards[i+2] = new ImageIcon(tmp.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
             this.cardsSmall[i+2] = new ImageIcon(tmp.getScaledInstance(cardWidth/2, cardHeight/2, Image.SCALE_SMOOTH));
         }
+    }
+
+    public void unloadInGame() {
+        this.background = null;
+        this.cardBack = null;
+        this.cardBackSmall = null;
+        this.cards = null;
+        this.cardsSmall = null;
     }
 
     public ImageIcon getMenuBackground() {

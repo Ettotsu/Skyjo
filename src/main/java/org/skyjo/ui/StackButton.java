@@ -6,7 +6,7 @@ import org.skyjo.game.Game;
 import javax.swing.*;
 import java.awt.*;
 
-public class StackButton extends JButton {
+public class StackButton extends JButton implements CardInterface {
 
     private final Assets assets;
     private final Game game;
@@ -19,6 +19,16 @@ public class StackButton extends JButton {
         this.setBorderPainted(false);
 
         setCard();
+
+        this.addActionListener(e -> {
+            if(game.getFirstRoundDone()) {
+                game.setStackChosen(true);
+                game.getStack().faceUpCard();
+            }
+            else {
+                System.out.println("First round still not over");
+            }
+        });
     }
 
     public void setCard(){
