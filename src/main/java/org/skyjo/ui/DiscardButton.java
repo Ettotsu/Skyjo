@@ -7,8 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DiscardButton extends JButton {
-    private Assets assets;
-    private Game game;
+    private final Assets assets;
+    private final Game game;
     private Card card;
 
     public DiscardButton(Assets assets, Game game) {
@@ -24,8 +24,9 @@ public class DiscardButton extends JButton {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         setIcon(assets.getCard(card.getValue() + 2));
-        super.paint(g);
+        setDisabledIcon(assets.getCard(card.getValue() + 2));
     }
 }

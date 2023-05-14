@@ -15,7 +15,6 @@ public class Game {
     private int endRound; // Number of the player who ends the round
     private boolean discardChosen=false; // True if the player has chosen to put the card from the stack on the discard pile
 
-
     private CardStack stack;
     private Card discard;
     private LinkedHashMap<Integer, Player> playersMap; // LinkedHashMap to keep the order of the players
@@ -24,7 +23,7 @@ public class Game {
 
     UI ui; // UI object
 
-    public Game(){
+    public Game() {
     }
 
 
@@ -45,13 +44,15 @@ public class Game {
         return false;
     }
 
-    public void setUI(UI ui){
+    public void setUI(UI ui) {
         this.ui = ui;
     }
 
-
-    public Card getPlayerCard(int player, int row, int col){
-        return this.playersMap.get(player).getCard(row,col);
+    public CardStack getStack() {
+        return this.stack;
+    }
+    public Player getPlayer(int player) {
+        return this.playersMap.get(player);
     }
 
     public int getCurrentPlayer() {
@@ -61,7 +62,7 @@ public class Game {
         this.currentPlayer = currentPlayer;
     }
     public void incrementCurrentPlayer() {
-        if(this.currentPlayer>this.nbPlayers) {
+        if(this.currentPlayer==this.nbPlayers) {
             this.currentPlayer = 1;
         }
         else {
@@ -82,19 +83,8 @@ public void setFirstRoundDone() {
         return this.cardSelected;
     }
 
-    /**
-     * Sets the cardSelected variable to true
-     */
-    public void setCardSelected() {
-        this.cardSelected = true;
-    }
-
-    /**
-     * Sets the cardSelected variable to false
-     * We could have made a method that inverts the cardSelected boolean, but we chose not to for security purposes
-     */
-    public void unsetCardSelected() {
-        this.cardSelected = false;
+    public void setCardSelected(boolean b) {
+        this.cardSelected = b;
     }
 
 
@@ -110,7 +100,7 @@ public void setFirstRoundDone() {
         discard = stack.drawCard();
 
 
-        for(int i=1;i<=this.nbPlayers;i++){
+        for(int i=1;i<=this.nbPlayers;i++) {
             playersMap.get(i).drawInitialDeck(stack,DECK_ROWS,DECK_COLS);
             playersMap.get(i).printCards();
             System.out.println(playersMap.get(i).getName() + " has " + playersMap.get(i).getScore() + " points");
@@ -131,11 +121,11 @@ public void setFirstRoundDone() {
         return this.discard;
     }
 
-    public String getPlayerName(int value){
+    public String getPlayerName(int value) {
         return playersMap.get(value).getName();
     }
 
-    public void addScore(int player, int score){
+    public void addScore(int player, int score) {
         playersMap.get(player).addScore(score);
     }
 

@@ -4,7 +4,7 @@ import static org.skyjo.game.Game.DECK_COLS;
 import static org.skyjo.game.Game.DECK_ROWS;
 
 public class Player {
-    private String name;
+    private final String name;
     private int number=0, score=0;
     private Card[][] deck;
 

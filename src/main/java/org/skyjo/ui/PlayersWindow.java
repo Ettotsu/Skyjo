@@ -9,7 +9,7 @@ public class PlayersWindow extends JOptionPane {
     public static final int MIN_PLAYERS = 2, MAX_PLAYERS = 8; // Min a  nd max number of players
     private int nbPlayers=0; // Number of players in the game
 
-        public PlayersWindow(Game game){
+        public PlayersWindow(Game game) {
             super("Number of players");
             this.setSize(200,100);
             this.setVisible(true);
@@ -21,7 +21,7 @@ public class PlayersWindow extends JOptionPane {
             }
         }
 
-        private void askForNames(Game game){
+        private void askForNames(Game game) {
             JPanel panel = new JPanel(new GridLayout(nbPlayers, 2));
             for(int i=1;i<=nbPlayers;i++){
                 panel.add(new JLabel("Player " + i + ": "));

@@ -44,7 +44,7 @@ public class Assets {
 
     public void loadInGame(int screenWidth, int screenHeight, int cardWidth, int cardHeight) {
         // Background
-        Image tmp = new ImageIcon("src/main/resources/assets/menu/menu_background.png").getImage();
+        Image tmp = new ImageIcon("src/main/resources/assets/background.png").getImage();
         this.background = new ImageIcon(tmp.getScaledInstance(screenWidth, screenHeight, Image.SCALE_SMOOTH));
 
         // Card back
