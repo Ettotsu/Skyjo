@@ -57,8 +57,21 @@ public class Game {
     public int getCurrentPlayer() {
         return this.currentPlayer;
     }
+
+    public Player getPlayerN(int n){
+        return this.playersMap.get(n);
+    }
     public void setCurrentPlayer(int currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+    public void makeCurrentPlayer(){
+        int firstPlayer = 1;
+        for (int i = 2; i<=this.nbPlayers; i++){
+            if (this.getPlayerN(i).getFlippedScore() > this.getPlayerN(firstPlayer).getFlippedScore()){
+                firstPlayer = i;
+            }
+        }
+        this.setCurrentPlayer(firstPlayer);
     }
     public void incrementCurrentPlayer() {
         if(this.currentPlayer>this.nbPlayers) {
@@ -106,7 +119,7 @@ public void setFirstRoundDone() {
         this.endRound = 0;
         this.discardChosen = false;
         stack = new CardStack();
-        stack.printCards();
+        //stack.printCards();
         discard = stack.drawCard();
 
 
@@ -130,6 +143,13 @@ public void setFirstRoundDone() {
     public Card getDiscard() {
         return this.discard;
     }
+    public void setDiscard(Card discard){
+        discard.setFaceUp();
+        this.discard = discard;
+    }
+    public Card getStack(){
+        return this.stack.drawCard();
+    }
 
     public String getPlayerName(int value){
         return playersMap.get(value).getName();
@@ -146,5 +166,6 @@ public void setFirstRoundDone() {
         }
         return scoresMap.lastEntry().getValue();
     }
+
 }
 

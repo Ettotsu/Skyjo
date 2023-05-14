@@ -19,12 +19,22 @@ public class Player {
             this.name = name;
         }
     }
-    public void printCards(){
-        for(int i=0;i<deck.length;i++){
-            for(int j=0;j<deck[i].length;j++){
-                System.out.print(deck[i][j].getValue() + " ");
+    public void printCards() {
+        Card card;
+        int cardCounter = 0;
+        for (int i = 0; i < deck.length; i++) {
+            for (int j = 0; j < deck[i].length; j++) {
+                card = this.deck[i][j];
+                if (card.isFaceUp()) {
+                    System.out.print(card.getValue() + " ");
+                } else {
+                    System.out.print("X ");
+                }
+                cardCounter++;
+                if (cardCounter % 4 == 0) {
+                    System.out.println();
+                }
             }
-            System.out.println();
         }
     }
 
@@ -53,4 +63,26 @@ public class Player {
         return this.deck[row][col];
     }
 
+    public void flipCard(int row, int col){
+        Card currentCard = this.getCard(row,col);
+        currentCard.setFaceUp();
+    }
+    public Card switchCard(Card card, int row, int col){
+        Card temp = this.deck[row][col];
+        this.deck[row][col] = card;
+        return temp;
+    }
+    public int getFlippedScore() {
+        int score = 0;
+        Card card;
+        for (int i = 0; i < deck.length; i++) {
+            for (int j = 0; j < deck[i].length; j++) {
+                card = this.deck[i][j];
+                if (card.isFaceUp()) {
+                    score += card.getValue();
+                }
+            }
+        }
+        return score;
+    }
 }

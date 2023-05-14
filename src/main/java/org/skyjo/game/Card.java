@@ -17,4 +17,5 @@ public class Card {
     public boolean isFaceUp(){
         return this.isFaceUp;
     }
+    public void setBlank(){ this.blank=true; }
 }
