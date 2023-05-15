@@ -37,11 +37,12 @@ public class CardButton extends JButton implements CardInterface {
                             card.setFaceUp();
                             game.getPlayer(game.getCurrentPlayer()).addScore(card.getValue());
                             game.setFirstRoundDone();
+                            System.out.println("First round done");
                             game.setCardSelected(false);
                             game.setCurrentPlayer(game.getMaxScore());
                             game.resetlAllScores();
                             ui.setAllCards();
-                            ui.EnableAllCards(false);
+                            ui.EnableAllCards(true);
                             ui.putPlayerInTitle();
                             ui.updatePlayerLabel();
                             ui.repaint();

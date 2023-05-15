@@ -302,7 +302,7 @@ public class UI extends JFrame {
         stackButton = new StackButton(assets, game);
         stackButton.setBounds(stackX, stackY, cardWidth, cardHeight);
         // Discard button
-        discardButton = new DiscardButton(assets, game);
+        discardButton = new DiscardButton(assets, game, this);
         discardButton.setBounds(discardX, discardY, cardWidth, cardHeight);
 
         playerLabel = new JLabel() { // Label displaying the current player

@@ -11,7 +11,7 @@ public class DiscardButton extends JButton implements CardInterface {
     private final Game game;
     private Card card;
 
-    public DiscardButton(Assets assets, Game game) {
+    public DiscardButton(Assets assets, Game game, UI ui) {
         this.assets = assets;
         this.game = game;
 
@@ -25,8 +25,11 @@ public class DiscardButton extends JButton implements CardInterface {
                     game.setDiscardChosen(true);
                     game.setDiscard(game.getStack().drawCard());
                     this.setCard();
-                    this
+                    ui.getDiscardButton().setCard();
+                    ui.getDiscardButton().repaint();
+                    ui.repaint();
                     System.out.println("Discard clicked");
+                    game.getStack().printCards();
                 }
                 else {
 
@@ -46,6 +49,7 @@ public class DiscardButton extends JButton implements CardInterface {
     @Override
     public void setCard(){
         card = game.getDiscard();
+        this.repaint();
     }
 
     /**

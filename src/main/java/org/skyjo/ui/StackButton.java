@@ -40,6 +40,7 @@ public class StackButton extends JButton implements CardInterface {
     @Override
     public void setCard(){
         card = game.getStack().getLastCard();
+        this.repaint();
     }
 
     @Override

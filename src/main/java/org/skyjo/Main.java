@@ -29,7 +29,7 @@ public class Main {
             while (n < 0 || n > 1) { // While the input is not 0 or 1
                 n = scanner.nextInt();
                 if (n < 0 || n > 1) {
-                    System.out.println("Are you already trying to break the game ???"); //Easter egg de zinzin
+                    System.out.println("Are you trying to break the game???"); //Easter egg de zinzin
                 }
             }
             if (n == 0) {
