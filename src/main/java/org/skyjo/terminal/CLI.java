@@ -1,22 +1,35 @@
 package org.skyjo.terminal;
 import org.skyjo.game.*;
-import java.util.LinkedHashMap;
-import java.util.TreeMap;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class CLI {
     private Game game ;
 
+    /**
+     * Constructs a CLI object with the specified game and initializes the game
+     * @param game The Game object to be used for the CLI interface
+     */
     public CLI(Game game){
         this.game = game;
 
         this.setPlayers();
         this.start();
     }
+
+    /**
+     * Prints the value of the card in the discard pile
+     */
     public void printDiscard(){
         System.out.println("Discard : "+this.game.getDiscard().getValue());
     }
+
+    /**
+     * Asks the user to choose between two options
+     * @param option1 The first option
+     * @param option2 The second option
+     * @return The user's choice represented by an integer (0 or 1)
+     */
     public int askChoice(String option1, String option2){
         int n = -1;
         Scanner scanner = new Scanner(System.in);
@@ -27,6 +40,10 @@ public class CLI {
         scanner.nextLine();
         return n;
     }
+
+    /**
+     * Sets the number of players for the game and their names
+     */
     public void setPlayers(){
         int n = 0;
         Scanner scanner = new Scanner(System.in);
@@ -44,6 +61,12 @@ public class CLI {
         }
         this.game.makePlayersMap(n,listOfNames);
     }
+
+    /**
+     * Gets the user's choice for a card selection
+     * @param currentPlayer The current player object
+     * @return An array representing the chosen card [row, column]
+     */
     public int[] getCard(Player currentPlayer){
         int[] chosenCard = new int[2];
         Scanner scanner = new Scanner(System.in);
@@ -64,6 +87,10 @@ public class CLI {
         scanner.nextLine();
         return chosenCard;
     }
+
+    /**
+     * Flips two cards for each player in the game
+     */
     public void flipTwoCards(){
         Player player;
         int[] chosenCard = new int[2];
@@ -79,6 +106,11 @@ public class CLI {
             player.printCards();
         }
     }
+
+    /**
+     * Performs a turn in the game
+     * @return True if the game should continue, False if the game has ended
+     */
     public boolean turn(){
         if (this.game.getCurrentPlayer() == this.game.getEndRound()){
         System.out.println("Game ended ! Time to count points...");
@@ -95,12 +127,12 @@ public class CLI {
             player.printCards();
             this.printDiscard();
             choice = askChoice("draw a new card", "get a card from the discard"); //draw : 0, discard : 1
-            if (choice == 0){
+            if (choice == 0){ // Asks what to do with the drawn card
                 chosenCard = this.game.getStack().drawCard();
                 chosenCard.setFaceUp();
                 System.out.println("Drawn card : "+chosenCard.getValue());
                 choice = askChoice("switch a card", "throw your card in the discard"); //switch : 0, discard : 1
-                if (choice == 0){
+                if (choice == 0){ // Switches the card
                     do{
                         System.out.println(player.getName()+", select a card to switch.");
                         switchCard = this.getCard(player);
@@ -108,16 +140,16 @@ public class CLI {
                             System.out.println("Cannot switch a removed card... try again !");
                         }
                     }
-                    while(player.getCard(switchCard[0], switchCard[1]).isBlank());
+                    while(player.getCard(switchCard[0], switchCard[1]).isBlank());  // Controls
                     chosenCard = player.switchCard(chosenCard, switchCard[0], switchCard[1]);
                     this.game.setDiscard(chosenCard);
                 }
-                else{
+                else{ // Sends the card to the discard then flipps a card
                     this.game.setDiscard(chosenCard);
                     do{
                         System.out.println(player.getName()+", select a card to turn.");
                         switchCard = this.getCard(player);
-                        if (player.getCard(switchCard[0], switchCard[1]).isFaceUp()){
+                        if (player.getCard(switchCard[0], switchCard[1]).isFaceUp()){ //flipped cards cannot be flipped (blank cards are always flipped)
                             System.out.println("This card is already face up");
                         }
                     }
@@ -125,7 +157,7 @@ public class CLI {
                     player.getCard(switchCard[0], switchCard[1]).setFaceUp();
                 }
             }
-            else{
+            else{ // Gets the cards from the discard and switches
                 chosenCard = this.game.getDiscard();
                 System.out.println(player.getName() + ", select a card to switch.");
                 switchCard = this.getCard(player);
@@ -146,6 +178,10 @@ public class CLI {
             return true;
         }
     }
+
+    /**
+     * Starts the game
+     */
     public boolean startGame(){
         this.game.resetGame();
         this.flipTwoCards();
@@ -158,6 +194,8 @@ public class CLI {
         //calcul points
         Player player;
         int score;
+        int minScore = 145; // Can never be reached, so the first player will automatically be the minScore
+        int[] scoreTable = new int[game.getNbPlayers()];
         for (int i = 1; i <= game.getNbPlayers(); i++){
             player = this.game.getPlayer(i);
             score = player.calculateScore();
@@ -165,9 +203,16 @@ public class CLI {
             player.flipAll();
             player.printCards();
             System.out.println(player.getName()+", your score on this game is "+score+" points.");
+            if (score < minScore) { // Checks the minimum score because the finishing player needs to have the fewest points
+                minScore = score;
+            }
             player.addScore(score);
+            scoreTable[i] = score;
             System.out.println(player.getName()+", your total score is "+player.getScore()+" points.");
             System.out.println("-------------------");
+        }
+        if (scoreTable[this.game.getEndRound()] > minScore){ // Adds the score a second time if the player didn't manage to get the lowest score
+            this.game.getPlayer(this.game.getEndRound()).addScore(scoreTable[this.game.getEndRound()]);
         }
         //
         int checkLoser = this.game.over120();
@@ -189,6 +234,9 @@ public class CLI {
         }
     }
 
+    /**
+     * Starts the CLI game
+     */
     public void start(){
         System.out.println("Welcome to the Temrinal version of Fail Your Deutec !");
         boolean running = true;
