@@ -25,8 +25,8 @@ public class DiscardButton extends JButton implements CardInterface {
                     game.setDiscardChosen(true);
                     game.setDiscard(game.getStack().drawCard());
                     this.setCard();
-                    ui.getDiscardButton().setCard();
-                    ui.getDiscardButton().repaint();
+                    ui.getStackButton().setCard();
+                    ui.getStackButton().repaint();
                     ui.repaint();
                     System.out.println("Discard clicked");
                     game.getStack().printCards();
