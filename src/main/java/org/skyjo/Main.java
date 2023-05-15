@@ -26,21 +26,16 @@ public class Main {
             System.out.println("Welcome to Fail Your Deutec!\n\nEnter 0 for CLI or 1 for GUI:");
             int n = -1;
             Scanner scanner = new Scanner(System.in);
-            scanner.nextLine();
-            while (n != 0 && n != 1) {
-                if (scanner.nextInt() == 0) {
-                    n = 0;
-                    scanner.nextLine();
-                } else if (scanner.nextInt() == 1) {
-                    n = 1;
-                    scanner.nextLine();
-                } else {
-                    System.out.println("Invalid argument, are you trying to break the game?"); // Easter egg de zinzin
+            while (n < 0 || n > 1) {
+                n = scanner.nextInt();
+                if (n < 0 || n > 1) {
+                    System.out.println("Are you already trying to break the game ???"); //Easter egg de zinzin
                 }
             }
             if (n == 0) {
                 new CLI(game);
-            } else {
+            }
+            else {
                UI window = new UI(game);
             }
         }

@@ -5,6 +5,7 @@ import org.skyjo.ui.UI;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
+import java.util.ArrayList;
 
 public class Game {
 
@@ -13,7 +14,7 @@ public class Game {
     private int currentPlayer; // Number of the player who is playing
     private boolean firstRoundDone = false; // True if the players have chosen their 2 cards
     private boolean cardSelected = false; // True if the player has chosen a card (for the first round)
-    private int endRound; // Number of the player who ends the round
+    private int endRound = 0; // Number of the player who ends the round
     private boolean stackChosen = false; // True if the player has chosen stack at the beginning of its turn
     private boolean discardChosen = false; // True if the player has chosen the discard at the beginning of its turn or after having chosen the stack
 
@@ -58,6 +59,14 @@ public class Game {
 
     public void setCurrentPlayer(int currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public int getEndRound(){
+        return this.endRound;
+    }
+
+    public void setEndRound(int player) {
+        this.endRound = player;
     }
 
     public void incrementCurrentPlayer() {
@@ -108,12 +117,16 @@ public class Game {
         return this.discardChosen;
     }
 
-    public void checkPerfectColumn(int player) {
+    public boolean checkPerfectColumn(int player) {
         int value = this.getPlayer(player).checkPerfectColumn();
         if(value != -3){
             Card card = new Card(value);
             card.setFaceUp();
             this.setDiscard(card);
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
@@ -137,13 +150,29 @@ public class Game {
         }
     }
 
-    private boolean over120(LinkedHashMap<Integer, Player> playersMap) {
+    public int over120() {
         for (int i = 1; i <= nbPlayers; i++) {
-            if (playersMap.get(i).getScore() >= 120) {
-                return true;
+            if (this.playersMap.get(i).getScore() >= 120) {
+                return i;
             }
         }
-        return false;
+        return 0;
+    }
+
+    public ArrayList<Integer> getWinners() {
+        ArrayList<Integer> winners = new ArrayList<Integer>();
+        winners.add(1);
+        for (int i = 1; i < nbPlayers; i++) {
+            if (this.playersMap.get(i).getScore() < this.playersMap.get(winners.get(0)).getScore()){ // checks if the current player has a lower score than the first player of the winners
+                winners.clear(); //clears all the previous winners
+                winners.add(i);
+            }
+            else if (this.playersMap.get(i).getScore() == this.playersMap.get(winners.get(0)).getScore()){ //checks if the current player has the same score as the winner
+                winners.add(i);
+            }
+        }
+
+        return winners;
     }
 
 

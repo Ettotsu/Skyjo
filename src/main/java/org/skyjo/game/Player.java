@@ -25,7 +25,11 @@ public class Player {
                 card = value;
                 if (card.isFaceUp()) {
                     System.out.print(card.getValue() + " ");
-                } else {
+                }
+                else if (card.isBlank()){
+                    System.out.print("/ ");
+                }
+                else {
                     System.out.print("X ");
                 }
                 cardCounter++;
@@ -84,6 +88,18 @@ public class Player {
             }
         }
         return firstValue;
+    }
+
+    public boolean checkCardsFlipped(){
+        int counter = 0;
+        for (int i = 0; i<Game.DECK_ROWS; i++){
+            for (int j = 0; j<Game.DECK_COLS; j++){
+                if (this.deck[i][j].isBlank() || this.deck[i][j].isFaceUp()){
+                    counter += 1;
+                }
+            }
+        }
+        return counter == Game.DECK_COLS * Game.DECK_ROWS;
     }
 
     public Card switchCard(Card card, int row, int col){
