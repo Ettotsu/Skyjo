@@ -23,11 +23,11 @@ public class Player {
         for (Card[] cards : deck) {
             for (Card value : cards) {
                 card = value;
-                if (card.isFaceUp()) {
-                    System.out.print(card.getValue() + " ");
-                }
-                else if (card.isBlank()){
+                if (card.isBlank()){
                     System.out.print("/ ");
+                }
+                else if (card.isFaceUp()) {
+                    System.out.print(card.getValue() + " ");
                 }
                 else {
                     System.out.print("X ");
@@ -52,11 +52,20 @@ public class Player {
     public void addScore(int score) {
         this.score = this.score + score;
     }
-
-    public void updateScore() {
+    public int calculateScore() {
+        int score = 0;
         for (Card[] cards : deck) {
             for (Card card : cards) {
-                    this.score = this.score + card.getValue();
+                    score += card.getValue();
+            }
+        }
+        return score;
+    }
+
+    public void flipAll() {
+        for (Card[] cards : deck) {
+            for (Card card : cards) {
+                card.setFaceUp();
             }
         }
     }
@@ -75,18 +84,28 @@ public class Player {
     }
 
     public int checkPerfectColumn() {
-        int firstValue = -3;
+        int firstValue = 13;
         for(int i=0;i<Game.DECK_COLS; i++) {
             firstValue = deck[0][i].getValue();
+            System.out.println("Debug first value "+firstValue);
             for(int j=1;j<Game.DECK_ROWS;j++) {
-                if(deck[j][i].getValue() != firstValue) {
-                    return -3;
+                System.out.println("Debug check value "+deck[j][i].getValue());
+                if((deck[j][i].getValue() != firstValue) || (!deck[j][i].isFaceUp()) || (deck[j][i].isBlank())) { //if face down, we do not have a full column, and if blank, cannot too
+                    firstValue = 13;
+                }
+                else{
+                    firstValue = deck[j][i].getValue();
                 }
             }
-            for(int j=0;j<Game.DECK_ROWS;j++) {
-                deck[j][i].setBlank();
+            if (firstValue != 13){
+                for(int j=0;j<Game.DECK_ROWS;j++) {
+                    System.out.println("Debug set blank");
+                    deck[j][i].setBlank();
+                }
+                return firstValue;
             }
         }
+        System.out.println("Debug returned value : "+firstValue);
         return firstValue;
     }
 

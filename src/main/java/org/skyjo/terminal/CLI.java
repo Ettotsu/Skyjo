@@ -69,7 +69,7 @@ public class CLI {
         int[] chosenCard = new int[2];
         for (int i = 1; i<=this.game.getNbPlayers(); i++){
             player = game.getPlayer(i);
-            System.out.println("----------------");
+            System.out.println("-------------------");
             for (int j = 0; j<2; j++){
                 System.out.println("Flip card n°"+i);
                 chosenCard = this.getCard(player);
@@ -91,6 +91,8 @@ public class CLI {
 
             Player player = this.game.getPlayer(this.game.getCurrentPlayer());
             System.out.println(player.getName()+"'s turn.");
+            System.out.println("Here are your cards.");
+            player.printCards();
             this.printDiscard();
             choice = askChoice("draw a new card", "get a card from the discard"); //draw : 0, discard : 1
             if (choice == 0){
@@ -99,8 +101,14 @@ public class CLI {
                 System.out.println("Drawn card : "+chosenCard.getValue());
                 choice = askChoice("switch a card", "throw your card in the discard"); //switch : 0, discard : 1
                 if (choice == 0){
-                    System.out.println(player.getName()+", select a card to switch.");
-                    switchCard = this.getCard(player);
+                    do{
+                        System.out.println(player.getName()+", select a card to switch.");
+                        switchCard = this.getCard(player);
+                        if (player.getCard(switchCard[0], switchCard[1]).isBlank()){
+                            System.out.println("Cannot switch a removed card... try again !");
+                        }
+                    }
+                    while(player.getCard(switchCard[0], switchCard[1]).isBlank());
                     chosenCard = player.switchCard(chosenCard, switchCard[0], switchCard[1]);
                     this.game.setDiscard(chosenCard);
                 }
@@ -134,6 +142,7 @@ public class CLI {
                 this.game.setEndRound(this.game.getCurrentPlayer());
             }
             this.game.incrementCurrentPlayer();
+            System.out.println("-------------------");
             return true;
         }
     }
@@ -147,6 +156,20 @@ public class CLI {
             running = turn();
         }
         //calcul points
+        Player player;
+        int score;
+        for (int i = 1; i <= game.getNbPlayers(); i++){
+            player = this.game.getPlayer(i);
+            score = player.calculateScore();
+            System.out.println(player.getName()+", let's see all of your cards !");
+            player.flipAll();
+            player.printCards();
+            System.out.println(player.getName()+", your score on this game is "+score+" points.");
+            player.addScore(score);
+            System.out.println(player.getName()+", your total score is "+player.getScore()+" points.");
+            System.out.println("-------------------");
+        }
+        //
         int checkLoser = this.game.over120();
         if (checkLoser != 0){
             System.out.println("Oh no !!! We have a Loser... "+this.game.getPlayer(checkLoser).getName()+" got his DEUTEC !");
@@ -159,6 +182,9 @@ public class CLI {
             return false;
         }
         else{
+            System.out.println("-------------------");
+            System.out.println("Moving on to the next round...");
+            System.out.println("-------------------");
             return true;
         }
     }

@@ -119,7 +119,7 @@ public class Game {
 
     public boolean checkPerfectColumn(int player) {
         int value = this.getPlayer(player).checkPerfectColumn();
-        if(value != -3){
+        if(value != 13){
             Card card = new Card(value);
             card.setFaceUp();
             this.setDiscard(card);
@@ -200,7 +200,9 @@ public class Game {
         this.stackChosen = false;
         this.discardChosen = false;
         stack = new CardStack();
-        discard = stack.drawCard();
+        Card card = stack.drawCard();
+        card.setFaceUp();
+        discard = card;
 
         for (int i = 1; i <= this.nbPlayers; i++) {
             playersMap.get(i).drawInitialDeck(stack, DECK_ROWS, DECK_COLS);
