@@ -7,7 +7,7 @@ public class Assets {
 
     public static final int MENU_BUTTON_ORIGINAL_WIDTH = 146, MENU_BUTTON_ORIGINAL_HEIGHT = 42; // Original width and height of the menu buttons
 
-    private ImageIcon background, menuBackground, start, startHover, settings, settingsHover, minigame, minigameHover, quit, quitHover, cardBack, cardBackSmall; // All the images
+    private ImageIcon background, menuBackground, start, startHover, settings, settingsHover, minigame, minigameHover, quit, quitHover, cardBack, cardBackSmall, cardBlank, cardBlankSmall; // All the images
     private ImageIcon[] cards, cardsSmall; // All the card images in arrays
 
     /**
@@ -77,6 +77,12 @@ public class Assets {
         tmp = new ImageIcon("src/main/resources/assets/cards/back.png").getImage();
         this.cardBack = new ImageIcon(tmp.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
         this.cardBackSmall = new ImageIcon(tmp.getScaledInstance(cardWidth/2, cardHeight/2, Image.SCALE_SMOOTH));
+
+        // Card blank
+        tmp = new ImageIcon("src/main/resources/assets/cards/blank.png").getImage();
+        this.cardBlank = new ImageIcon(tmp.getScaledInstance(cardWidth, cardHeight, Image.SCALE_SMOOTH));
+        this.cardBlankSmall = new ImageIcon(tmp.getScaledInstance(cardWidth/2, cardHeight/2, Image.SCALE_SMOOTH));
+
         // Cards
         this.cards = new ImageIcon[15];
         this.cardsSmall = new ImageIcon[15];
@@ -94,6 +100,8 @@ public class Assets {
         this.background = null;
         this.cardBack = null;
         this.cardBackSmall = null;
+        this.cardBlank = null;
+        this.cardBlankSmall = null;
         this.cards = null;
         this.cardsSmall = null;
     }
@@ -183,6 +191,20 @@ public class Assets {
     }
 
     /**
+     * @return the blank card
+     */
+    public ImageIcon getCardBlank() {
+        return cardBlank;
+    }
+
+    /**
+     * @return the small blank card
+     */
+    public ImageIcon getCardBlankSmall() {
+        return cardBlankSmall;
+    }
+
+    /**
      * @param value the value of the card
      * @return the card
      */
@@ -197,4 +219,5 @@ public class Assets {
     public ImageIcon getCardSmall(int value) {
         return cardsSmall[value];
     }
+
 }

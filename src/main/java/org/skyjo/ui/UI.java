@@ -59,7 +59,7 @@ public class UI extends JFrame {
         this.calculateSizes();
         assets = new Assets();
 
-        this.MainMenu();
+        this.mainMenu();
     }
 
     /**
@@ -138,7 +138,7 @@ public class UI extends JFrame {
     /**
      * Creates the main menu.
      */
-    private void MainMenu() {
+    public void mainMenu() {
         this.getContentPane().removeAll(); // Removes all the components from the window
         assets.loadMenu(width, height); // Loads the menu images
 
@@ -230,7 +230,7 @@ public class UI extends JFrame {
      * Enables or disables all the card buttons
      * @param b true to enable, false to disable
      */
-    public void EnableAllCards(boolean b) {
+    public void enableAllCards(boolean b) {
         for(int i=0;i<Game.DECK_ROWS * Game.DECK_COLS;i++) {
             panels.get(0).getComponent(i).setEnabled(b);
         }

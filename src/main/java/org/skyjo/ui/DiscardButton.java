@@ -7,38 +7,36 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DiscardButton extends JButton implements CardInterface {
-    private final Assets assets;
-    private final Game game;
-    private Card card;
+    private final Assets assets; // Assets reference
+    private final Game game; // Game reference
+    private Card card; // Card reference
 
+    /**
+     * Constructor
+     * The action listener is used for the logic the game
+     * @param assets the assets
+     * @param game the game
+     * @param ui the ui
+     */
     public DiscardButton(Assets assets, Game game, UI ui) {
         this.assets = assets;
         this.game = game;
 
-        this.setBorderPainted(false);
+        this.setBorderPainted(false); // Removes the border
 
-        setCard();
+        setCard(); // Sets the card
 
         this.addActionListener(e -> {
-            if(game.getFirstRoundDone()) {
-                if(game.getStackChosen()) {
-                    game.setDiscardChosen(true);
-                    game.setDiscard(game.getStack().drawCard());
-                    this.setCard();
-                    ui.getStackButton().setCard();
-                    ui.getStackButton().repaint();
-                    ui.repaint();
-                    System.out.println("Discard clicked");
-                    game.getStack().printCards();
+            if(game.getFirstRoundDone()) { // If the first round is done
+                if(!game.getDiscardChosen()) { // If the discard is not chosen
+                    game.setDiscardChosen(true); // Set the discard to chosen
+                    if (game.getStackChosen()) { // If the stack is chosen
+                        game.setDiscard(game.getStack().drawCard()); // Draws a card from the stack and set it to the discard
+                        // Sets the cards
+                        this.setCard();
+                        ui.getStackButton().setCard();
+                    }
                 }
-                else {
-
-                }
-               this.setEnabled(false);
-
-            }
-            else {
-                    System.out.println("First round not over");
             }
         });
     }

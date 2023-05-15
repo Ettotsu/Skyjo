@@ -8,28 +8,30 @@ import java.awt.*;
 
 public class StackButton extends JButton implements CardInterface {
 
-    private final Assets assets;
-    private final Game game;
-    private Card card;
+    private final Assets assets; // Assets reference
+    private final Game game; // Game reference
+    private Card card; // Card reference
 
+    /**
+     * Constructor
+     * The action listener is used for the logic the game
+     * @param assets the assets
+     * @param game the game
+     */
     public StackButton(Assets assets, Game game) {
         this.assets = assets;
         this.game = game;
 
-        this.setBorderPainted(false);
+        this.setBorderPainted(false); // Removes the border
 
-        setCard();
+        setCard(); // Sets the card
 
         this.addActionListener(e -> {
-            if(game.getFirstRoundDone()) {
-                if(!game.getDiscardChosen()) {
-                    game.setStackChosen(true);
-                    game.getStack().faceUpCard();
-                    System.out.println("Stack clicked");
+            if(game.getFirstRoundDone()) { // If the first round is done
+                if(!game.getDiscardChosen()) { // If the discard is not chosen (to avoid double click)
+                    game.setStackChosen(true);  // The stack is chosen
+                    game.getStack().faceUpCard(); // Faces up the card in the stack
                 }
-            }
-            else {
-                System.out.println("First round still not over");
             }
         });
     }
@@ -43,6 +45,10 @@ public class StackButton extends JButton implements CardInterface {
         this.repaint();
     }
 
+    /**
+     * Paints the card
+     * @param g the graphics
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

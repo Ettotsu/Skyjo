@@ -217,11 +217,11 @@ public class CLI {
         //
         int checkLoser = this.game.over120();
         if (checkLoser != 0){
-            System.out.println("Oh no !!! We have a Loser... "+this.game.getPlayer(checkLoser).getName()+" got his DEUTEC !");
+            System.out.println("Oh no !!! We have a Loser... "+this.game.getPlayer(checkLoser).getName() + " got his DEUTEC !");
             ArrayList<Integer> winners= this.game.getWinners() ;
-            System.out.println("Congratulation to the winner !!! "+winners.get(0));
+            System.out.println("Congratulations to the winner !!! " + winners.get(0));
             for (int i = 1; i<winners.size(); i++){
-                System.out.println("Ex-aequo with"+winners.get(i));
+                System.out.println("Ex-aequo with" + winners.get(i));
             }
             System.out.println("You successfully failed your DEUTEC");
             return false;

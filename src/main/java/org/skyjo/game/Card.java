@@ -43,10 +43,11 @@ public class Card {
     }
 
     /**
-     * Sets the card blank
+     * Sets the card to blank abd face up
      */
     public void setBlank(){
         this.blank=true;
+        this.isFaceUp=true;
     }
 
     /**

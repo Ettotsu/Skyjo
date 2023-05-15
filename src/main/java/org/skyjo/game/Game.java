@@ -172,6 +172,7 @@ public class Game {
      */
     public void setDiscardChosen(boolean b) {
         this.discardChosen = b;
+        System.out.println("Warning, discardChosen set to " + b + " !");
     }
 
     /**
@@ -209,15 +210,22 @@ public class Game {
     }
 
     /**
+     * @param b True if we want the player with the highest score, false if we want the player with the lowest score
      * @return the number of the player with the highest score
      */
-    public int getMaxScore() {
+    public int getMaxScore(boolean b) {
         TreeMap<Integer, Integer> map = new TreeMap<>(Comparator.naturalOrder()); // TreeMap to sort the scores
         for (int i = 1; i <= nbPlayers; i++) {
             map.put(playersMap.get(i).getScore(), i); // Puts the scores (key) and the players (value) in the TreeMap
         }
+        if(b) {
         return map.lastEntry().getValue();
+        }
+        else {
+            return map.firstEntry().getValue();
+        }
     }
+
 
     /**
      * Resets the score of all the players to 0
@@ -259,7 +267,6 @@ public class Game {
         return winners;
     }
 
-
     /**
      * @param player number of the player
      * @param row row of the card
@@ -269,7 +276,6 @@ public class Game {
     public Card getPlayerCard(int player, int row, int col) {
         return this.playersMap.get(player).getCard(row, col);
     }
-
 
     /**
      * Determines the player with the highest score and sets it as the currentPlayer at the end of the first round

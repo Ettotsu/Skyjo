@@ -41,7 +41,11 @@ public class CardLabel extends JLabel implements CardInterface {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(card.isFaceUp()) {
+        if(card.isBlank()){
+            setIcon(assets.getCardBlankSmall());
+            setDisabledIcon(assets.getCardBlankSmall());
+        }
+        else if(card.isFaceUp()) {
             setIcon(assets.getCardSmall(card.getValue()+2));
             setDisabledIcon(assets.getCardSmall(card.getValue()+2));
         } else {
