@@ -69,14 +69,41 @@ public class CardButton extends JButton implements CardInterface {
                     System.out.println("Card already face up");
                 }
             }
+            else {
+                if(game.getDiscardChosen()) {
+                    if(game.getStackChosen()) {
+                        if(!card.isFaceUp()) {
+                            card.setFaceUp();
+                            System.out.println("Card clicked");
+                            game.checkPerfectColumn(game.getCurrentPlayer());
+                            if(game.getEndRound()!=0) {
+                                if(game.getCurrentPlayer()+1 == game.getEndRound()) {
+                                    //CALCUL SCORE
+                                }
+                            }
+                        }
+                        else {
+                            System.out.println("Card already face up!");
+                        }
+                    }
+                }
+            }
         });
 
 
     }
+    /**
+     * Sets the reference to the card
+     */
+    @Override
     public void setCard() {
         card = game.getPlayer(game.getCurrentPlayer()).getCard(this.id / (Game.DECK_COLS), this.id % (Game.DECK_COLS));
     }
 
+    /**
+     * Paints the card
+     * @param g the graphics
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

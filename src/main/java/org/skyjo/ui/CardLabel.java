@@ -25,12 +25,19 @@ public class CardLabel extends JLabel implements CardInterface {
         this.setIcon(this.assets.getCardBackSmall());
     }
 
+    /**
+     * Sets the reference to the card
+     */
+    @Override
     public void setCard() {
         int player = 1 + ((game.getCurrentPlayer() + rank) % (game.getNbPlayers()));
         card = game.getPlayer(player).getCard(this.id / (Game.DECK_COLS), this.id % (Game.DECK_COLS));
     }
 
-
+    /**
+     * Paints the card
+     * @param g the graphics
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

@@ -37,7 +37,13 @@ public class UI extends JFrame {
 
     private JLabel playerLabel; // Panel containing the player labels
 
+    private StackButton stackButton; // Button that shows the stack pile
+    private DiscardButton discardButton; // Button that shows the discard pile
 
+    /**
+     * Constructor of the UI class
+     * @param game reference to the game object
+     */
     public UI(Game game) {
         super("Fail your Deutec"); // Title of the window
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Ends the program when the main window is closed
@@ -46,10 +52,10 @@ public class UI extends JFrame {
         this.game.setUI(this);
 
         prop=new PropertiesFile();
-        if(prop.getBooleanProperty("borderless")){
-            this.setUndecorated(true);
+        if(prop.getBooleanProperty("borderless")){ // If the borderless option is enabled
+            this.setUndecorated(true); // Removes the border of the window
         }
-        this.readSettings();
+        this.readSettings(); // Reads the settings from the properties file. The borderless feature is not included because it doesn't support to be updated while the program is running
         this.calculateSizes();
         assets = new Assets();
 
@@ -59,6 +65,8 @@ public class UI extends JFrame {
     /**
      * Calculates the size of the images.
      * We could have put the values in a file, but we decided to hardcode them for optimization purposes.
+     * The values are calculated with the original size of the window (1280x720).
+     * Some values are not constant for the clarity of the code. (Sorry for the magic numbers).
      */
     private void calculateSizes() {
 
@@ -72,7 +80,7 @@ public class UI extends JFrame {
         vgap = (height * GAP)/ORIGINAL_HEIGHT;
 
         // First position (player)
-        positionsX[0] = (width * 320)/ORIGINAL_WIDTH; // La fleeemme de faire des constantes
+        positionsX[0] = (width * 320)/ORIGINAL_WIDTH;
         positionsY[0] = (height * 300)/ORIGINAL_HEIGHT;
         // Second position
         positionsX[1] = (width * 40)/ORIGINAL_WIDTH;
@@ -108,8 +116,8 @@ public class UI extends JFrame {
         playerX = (width * 320)/ORIGINAL_WIDTH;
         playerY = (height * 262)/ORIGINAL_HEIGHT;
 
-        this.cardWidth = (width * 80)/ORIGINAL_WIDTH; // 80 is the original width of the image
-        this.cardHeight = (height * 112)/ORIGINAL_HEIGHT; // 112 is the original height of the image
+        this.cardWidth = (width * 80)/ORIGINAL_WIDTH;
+        this.cardHeight = (height * 112)/ORIGINAL_HEIGHT;
 
         panelWidth = Game.DECK_COLS*cardWidth + (Game.DECK_COLS-1)*hgap;
         panelHeight = Game.DECK_ROWS*cardHeight + (Game.DECK_ROWS-1)*vgap;
@@ -127,22 +135,27 @@ public class UI extends JFrame {
         this.calculateSizes();
     }
 
+    /**
+     * Creates the main menu.
+     */
     private void MainMenu() {
-        this.getContentPane().removeAll();
+        this.getContentPane().removeAll(); // Removes all the components from the window
+        assets.loadMenu(width, height); // Loads the menu images
 
-        assets.loadMenu(width, height);
-
+        // Creates the buttons
         MenuButton start = new MenuButton(assets.getStart(), assets.getStartHover());
-        start.addActionListener(e -> new PlayersWindow(game));
+        start.addActionListener(e -> new PlayersWindow(game)); // Opens the window to choose the number of players and their names
         MenuButton settings = new MenuButton(assets.getSettings(), assets.getSettingsHover());
         settings.addActionListener(e -> {
-            new SettingsWindow();
-            this.readSettings();
+            new SettingsWindow(); // Opens the settings window
+            this.readSettings(); // Updates the window settings
         });
         MenuButton minigame = new MenuButton(assets.getMinigame(), assets.getMinigameHover());
         minigame.addActionListener(e -> new MiniGameWindow());
         MenuButton quit = new MenuButton(assets.getQuit(), assets.getQuitHover());
         quit.addActionListener(e -> System.exit(0));
+
+        // Adds the buttons to the main panel
         JPanel mainPanel = new JPanel();
         mainPanel.add(start);
         mainPanel.add(settings);
@@ -150,20 +163,21 @@ public class UI extends JFrame {
         mainPanel.add(quit);
         mainPanel.setVisible(true);
 
+        mainPanel.setBounds(0, (500*height)/ORIGINAL_HEIGHT, width, height); // Sets the size and the position of the panel
+        JLabel background = new JLabel(assets.getMenuBackground()); // Creates the background
+        background.setBounds(0, 0, width, height); // Sets the size and the position of the background
+
+        // Adds the background and the main panel to the layered pane (for transparency)
         JLayeredPane layeredPane = new JLayeredPane();
-
-        mainPanel.setBounds(0, (500*height)/ORIGINAL_HEIGHT, width, height);
-        JLabel background = new JLabel(assets.getMenuBackground());
-        background.setBounds(0, 0, width, height);
-
         layeredPane.add(background, 0);
         layeredPane.add(mainPanel, 1);
         mainPanel.setOpaque(false);
         layeredPane.setOpaque(true);
 
-        this.getContentPane().add(layeredPane);
-        this.setLocationRelativeTo(null);
+        this.getContentPane().add(layeredPane); // Adds the layered pane to the window
+        this.setLocationRelativeTo(null); // Centers the window
 
+        // Adds a listener to the window to update the sizes when the window is resized
         this.addComponentListener(new ComponentListener() { // It needs to override all the methods
             @Override
             public void componentResized(ComponentEvent e) {calculateSizes();}
@@ -178,24 +192,29 @@ public class UI extends JFrame {
         this.setVisible(true); // Makes the window visible
     }
 
-
+    /**
+     * Generates the panels containing the matrix of cards.
+     */
     private void generatePanels() {
-        panels = new LinkedHashMap<>();
-        panels.put(0, new JPanel());
+        panels = new LinkedHashMap<>(); // Creates a map to store the panels
+        panels.put(0, new JPanel()); // Creates the first panel separately because the player's cards are buttons
         panels.get(0).setLayout(new GridLayout(Game.DECK_ROWS, Game.DECK_COLS, hgap, vgap));
         for(int i = 0; i< Game.DECK_ROWS * Game.DECK_COLS; i++){
-            panels.get(0).add(new CardButton(i, assets, game, this));
+            panels.get(0).add(new CardButton(i, assets, game, this)); // Adds the buttons to the panel
         }
 
         for(int i=1;i<game.getNbPlayers();i++) {
-            panels.put(i, new JPanel());
+            panels.put(i, new JPanel()); // Creates the other panels
             panels.get(i).setLayout(new GridLayout(Game.DECK_ROWS, Game.DECK_COLS, hgap/2, vgap/2));
             for(int j = 0; j < Game.DECK_ROWS * Game.DECK_COLS; j++){
-                panels.get(i).add(new CardLabel(i - 1, j, assets, game));
+                panels.get(i).add(new CardLabel(i - 1, j, assets, game)); // Adds the labels to the panel
             }
         }
     }
 
+    /**
+     * Sets the cards of the panels.
+     */
     public void setAllCards() {
         for(int i=0; i<Game.DECK_ROWS * Game.DECK_COLS;i++){
             ((CardButton) panels.get(0).getComponent(i)).setCard();
@@ -206,28 +225,40 @@ public class UI extends JFrame {
             }
         }
     }
+
+    /**
+     * Enables or disables all the card buttons
+     * @param b true to enable, false to disable
+     */
     public void EnableAllCards(boolean b) {
         for(int i=0;i<Game.DECK_ROWS * Game.DECK_COLS;i++) {
             panels.get(0).getComponent(i).setEnabled(b);
         }
     }
 
+    /**
+     * Updates the window to show the game interface.
+     */
     public void gameInterface() {
-        this.generatePanels();
-        this.getContentPane().removeAll();
-        assets.unloadMenu();
-        assets.loadInGame(width, height, cardWidth, cardHeight);
+        this.generatePanels(); // Generates the panels
+        this.getContentPane().removeAll(); // Removes all the components from the window
+        assets.unloadMenu(); // Unloads the menu images
+        assets.loadInGame(width, height, cardWidth, cardHeight); // Loads the in-game images
 
+        // Creates the panels
         JPanel mainPanel = new JPanel();
         JLayeredPane layeredPane = new JLayeredPane();
         JLabel background = new JLabel(assets.getBackground());
 
-
-        panels.get(0).setBounds(positionsX[0], positionsY[0], panelWidth, panelHeight);
+        // Adds the panels to the layered pane
+        panels.get(0).setBounds(positionsX[0], positionsY[0], panelWidth, panelHeight); // Sets the size and the position of the player panel
         for(int i=0;i<game.getNbPlayers();i++) {
             mainPanel.add(panels.get(i));
         }
 
+        /**
+         * Sets the size and the position of the other panels depending on the number of players
+         */
         switch (game.getNbPlayers()) {
             case 2 -> panels.get(1).setBounds(positionsX[4], positionsY[4], panelWidth / 2, panelHeight / 2);
             case 3 -> {
@@ -260,59 +291,88 @@ public class UI extends JFrame {
                 panels.get(5).setBounds(positionsX[6], positionsY[6], panelWidth / 2, panelHeight / 2);
                 panels.get(6).setBounds(positionsX[7], positionsY[7], panelWidth / 2, panelHeight / 2);
             }
-            default -> {
+            default -> { // 8 players
                 for(int i=1;i<game.getNbPlayers();i++) {
                     panels.get(i).setBounds(positionsX[i], positionsY[i], panelWidth / 2, panelHeight / 2);
                 }
             }
         }
+
         // Stack button
-        StackButton stackButton = new StackButton(assets, game);
+        stackButton = new StackButton(assets, game);
         stackButton.setBounds(stackX, stackY, cardWidth, cardHeight);
         // Discard button
-        DiscardButton discardButton = new DiscardButton(assets, game);
+        discardButton = new DiscardButton(assets, game);
         discardButton.setBounds(discardX, discardY, cardWidth, cardHeight);
 
-        playerLabel = new JLabel() {
+        playerLabel = new JLabel() { // Label displaying the current player
+            /**
+             * Repaints the label
+             * @param g the graphics
+             */
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 this.repaint();
             }
         };
-        playerLabel.setHorizontalAlignment(JLabel.CENTER);
-        playerLabel.setBounds(playerX, playerY, panelWidth, 30);
-        playerLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        playerLabel.setHorizontalAlignment(JLabel.CENTER); // Sets the text to be centered
+        playerLabel.setBounds(playerX, playerY, panelWidth, 30); // Sets the size and the position of the label
+        playerLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Sets the font and the size of the text
+        updatePlayerLabel(); // Updates the text of the label
 
-        updatePlayerLabel();
-
+        // Adds the components to the main panel
         mainPanel.add(stackButton);
         mainPanel.add(discardButton);
         mainPanel.add(playerLabel);
-
-        mainPanel.setLayout(null);
+        mainPanel.setLayout(null); // Sets the layout to null to be able to set the position of the components
         background.setBounds(0, 0, width, height);
         mainPanel.setBounds(0, 0, width, height);
         layeredPane.setBounds(0, 0, width, height);
 
+        // Reloads the window
         this.repaint();
         this.revalidate();
 
+        // Adds the panels to the layered pane
         layeredPane.add(background, 0);
         layeredPane.add(mainPanel, 1);
-        this.getContentPane().add(layeredPane);
+        this.getContentPane().add(layeredPane); // Adds the layered pane to the window
 
-        this.putPlayerInTitle();
+        this.putPlayerInTitle(); // Puts the current player in the title of the window
     }
 
+    /**
+     * @return the stack button
+     */
+    public StackButton getStackButton() {
+        return stackButton;
+    }
+
+    /**
+     * @return the discard button
+     */
+    public DiscardButton getDiscardButton() {
+        return discardButton;
+    }
+
+    /**
+     * Puts the current player in the title of the window
+     */
     public void putPlayerInTitle() {
         this.setTitle("Fail Your Deutec - " + game.getPlayer(game.getCurrentPlayer()).getName() + "'s turn");
     }
 
+    /**
+     * Updates the text of the player label
+     */
     public void updatePlayerLabel() {
         playerLabel.setText(game.getPlayer(game.getCurrentPlayer()).getName());
     }
 
+    /**
+     * Increments the current player using the method in the Game class, puts the current player in the title and updates the player label
+     */
     public void incrementCurrentPlayer() {
         game.incrementCurrentPlayer();
         putPlayerInTitle();

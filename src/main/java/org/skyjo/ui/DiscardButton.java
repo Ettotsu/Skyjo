@@ -22,7 +22,11 @@ public class DiscardButton extends JButton implements CardInterface {
         this.addActionListener(e -> {
             if(game.getFirstRoundDone()) {
                 if(game.getStackChosen()) {
+                    game.setDiscardChosen(true);
                     game.setDiscard(game.getStack().drawCard());
+                    this.setCard();
+                    this
+                    System.out.println("Discard clicked");
                 }
                 else {
 
@@ -35,10 +39,19 @@ public class DiscardButton extends JButton implements CardInterface {
             }
         });
     }
+
+    /**
+     * Sets the reference to the card
+     */
+    @Override
     public void setCard(){
         card = game.getDiscard();
     }
 
+    /**
+     * Paints the card
+     * @param g the graphics
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

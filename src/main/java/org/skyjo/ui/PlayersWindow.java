@@ -7,35 +7,42 @@ import java.awt.*;
 
 public class PlayersWindow extends JOptionPane {
     public static final int MIN_PLAYERS = 2, MAX_PLAYERS = 8; // Min a  nd max number of players
-    private int nbPlayers=0; // Number of players in the game
+    private int nbPlayers; // Number of players in the game
 
-        public PlayersWindow(Game game) {
-            super("Number of players");
-            this.setSize(200,100);
-            this.setVisible(true);
+    /**
+     * Constructor
+     * @param game the game
+     */
+    public PlayersWindow(Game game) {
+        super("Number of players"); // Title of the window
+        this.setSize(200,100); // Size of the window
+        this.setVisible(true);
+        JSpinner playersSpinner = new JSpinner(new SpinnerNumberModel(MIN_PLAYERS, MIN_PLAYERS, MAX_PLAYERS, 1)); // Spinner to choose the number of players
+        if(showOptionDialog(null, playersSpinner,"Enter player number",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null)==JOptionPane.OK_OPTION){
+            this.nbPlayers = (int) playersSpinner.getValue();
+            askForNames(game); // Open the window to ask for the names
+        }
+    }
 
-            JSpinner playersSpinner = new JSpinner(new SpinnerNumberModel(MIN_PLAYERS, MIN_PLAYERS, MAX_PLAYERS, 1));
-            if(showOptionDialog(null, playersSpinner,"Enter player number",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null)==JOptionPane.OK_OPTION){
-                    this.nbPlayers = (int) playersSpinner.getValue();
-                    askForNames(game);
-            }
+    /**
+     * Window to ask for the names of the players
+     * @param game the game object
+     */
+    private void askForNames(Game game) {
+        JPanel panel = new JPanel(new GridLayout(nbPlayers, 2));
+        for(int i=1;i<=nbPlayers;i++){ // For each player, add a label and a text field
+            panel.add(new JLabel("Player " + i + ": "));
+            panel.add(new JTextField());
         }
 
-        private void askForNames(Game game) {
-            JPanel panel = new JPanel(new GridLayout(nbPlayers, 2));
+        if(showConfirmDialog(null, panel,"Enter the names of the players",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE)==JOptionPane.OK_OPTION){
+            String[] names = new String[nbPlayers+1];
             for(int i=1;i<=nbPlayers;i++){
-                panel.add(new JLabel("Player " + i + ": "));
-                panel.add(new JTextField());
+                JTextField nameField = (JTextField) panel.getComponent(i * 2 - 1);
+                names[i] = nameField.getText();
             }
-
-            if(showConfirmDialog(null, panel,"Enter the names of the players",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE)==JOptionPane.OK_OPTION){
-                String[] names = new String[nbPlayers+1];
-                for(int i=1;i<=nbPlayers;i++){
-                    JTextField nameField = (JTextField) panel.getComponent(i * 2 - 1);
-                    names[i] = nameField.getText();
-                }
-                game.makePlayersMap(nbPlayers, names);
-                game.startGame();
-            }
+            game.makePlayersMap(nbPlayers, names); // Makes the players map
+            game.startGame(); // Starts the game
         }
+    }
 }

@@ -7,15 +7,18 @@ import java.awt.*;
 
 public class SettingsWindow extends JOptionPane {
 
-    private JPanel panel;
-    private PropertiesFile prop;
-    private JComboBox<String> windowSize;
-    private JCheckBox borderless;
+    private JPanel panel; // The panel
+    private PropertiesFile prop; // The properties file
+    private JComboBox<String> windowSize; // The possibles sizes of the window
+    private JCheckBox borderless; // True if the window should be borderless
 
+    /**
+     * Constructor
+     */
     public SettingsWindow(){
-        super("Settings");
-        this.setSize(300,200);
-        this.setVisible(true);
+        super("Settings"); // Sets the title of the window
+        this.setSize(300,200); // Sets the size of the window
+        this.setVisible(true); // Makes the window visible
 
         panel = new JPanel();
         prop = new PropertiesFile();
@@ -32,7 +35,7 @@ public class SettingsWindow extends JOptionPane {
             windowSize.setSelectedIndex(2);
         }
         else {
-            windowSize.setSelectedIndex(1);
+            windowSize.setSelectedIndex(1); // Default value (1280x720)
         }
         borderless = new JCheckBox("Borderless");
         borderless.setSelected(prop.getBooleanProperty("borderless"));

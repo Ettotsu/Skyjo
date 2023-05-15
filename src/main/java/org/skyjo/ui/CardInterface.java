@@ -1,9 +1,16 @@
 package org.skyjo.ui;
 
-import javax.swing.*;
 import java.awt.*;
 
 public interface CardInterface {
-        public void setCard();
-        public void paintComponent(Graphics g);
+        /**
+         * Sets the reference to the card
+         */
+        void setCard();
+
+        /**
+         * Paints the card
+         * @param g the graphics
+         */
+        void paintComponent(Graphics g);
 }

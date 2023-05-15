@@ -22,8 +22,11 @@ public class StackButton extends JButton implements CardInterface {
 
         this.addActionListener(e -> {
             if(game.getFirstRoundDone()) {
-                game.setStackChosen(true);
-                game.getStack().faceUpCard();
+                if(!game.getDiscardChosen()) {
+                    game.setStackChosen(true);
+                    game.getStack().faceUpCard();
+                    System.out.println("Stack clicked");
+                }
             }
             else {
                 System.out.println("First round still not over");
@@ -31,6 +34,10 @@ public class StackButton extends JButton implements CardInterface {
         });
     }
 
+    /**
+     * Sets the reference to the card
+     */
+    @Override
     public void setCard(){
         card = game.getStack().getLastCard();
     }
