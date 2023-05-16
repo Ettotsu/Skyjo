@@ -172,7 +172,6 @@ public class Game {
      */
     public void setDiscardChosen(boolean b) {
         this.discardChosen = b;
-        System.out.println("Warning, discardChosen set to " + b + " !");
     }
 
     /**
